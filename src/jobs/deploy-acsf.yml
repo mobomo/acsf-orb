@@ -8,14 +8,22 @@ parameters:
     type: string
     default: ""
     description: "Environment fingerprints"
-  git_fingerprints:
-    type: string
-    default: ""
-    description: "Git fingerprints"
   acquia_key:
     type: string
     default: ""
     description: "Acquia Environment Key"
+  acquia_user:
+    type: string
+    default: ""
+    description: "Acquia Environment User"
+  acquia_api_host:
+    type: string
+    default: ""
+    description: "Acquia API Host"
+  git_fingerprints:
+    type: string
+    default: ""
+    description: "Git fingerprints for pushing tags"
   slack_channel:
     type: string
     default: ""
@@ -57,7 +65,7 @@ steps:
       name: Deploy to Dev
       command: |
         curl 'https://www.dev-mbn.acsitefactory.com/api/v1/update' \
-        -v -u mbnacsfapi:<<parameters.acquia_key>> -X POST \
+        -v -u <<parameters.acquia_user>>:<<parameters.acquia_key>> -X POST \
         -H 'Content-Type: application/json' \
         -d '{"scope": "sites", "sites_ref": "tags/build-v1.'"${CIRCLE_BUILD_NUM}"'", "sites_type": "code, db", "stack_id": 1}'
   - run:
