@@ -1,0 +1,12 @@
+version: 2.1
+
+description: >
+  Acquia Site Factory deployment orb
+
+# This information will be displayed in the orb registry and is not mandatory.
+display:
+  source_url: "https://www.github.com/mobomo/acsf-orb"
+
+# If your orb requires other orbs, you can import them like this. Otherwise remove the "orbs" stanza.
+# orbs:
+slack: circleci/slack@4.3.0
