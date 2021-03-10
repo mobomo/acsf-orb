@@ -23,8 +23,8 @@ parameters:
     description: "Acquia Site Factory environment name"
   acsf-deploy-type:
     type: enum
-    enum: [ 'code ,db', 'code' ]
-    default: 'code ,db'
+    enum: [ 'code, db', 'code' ]
+    default: 'code, db'
     description: "Acquia Site Factory deployment type"
   tag:
     default: build-v1.0.${CIRCLE_BUILD_NUM}
