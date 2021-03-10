@@ -51,3 +51,16 @@ to check the update endpoint and the parameters.
 Site Factory API docs: https://docs.acquia.com/site-factory/extend/api
 
 ## jira-transition
+Gets all tickets included between "current" deployed tag and "latest" tag, and transitions those tickets after a
+successful deployment.
+
+This command receives the following parameters:
+
+- `tag`: The "latest" tag to be used by git log to list tickets that were included between current..latest 
+  The default value is `build-v1.0.${CIRCLE_BUILD_NUM}`
+- `acsf-user`: The Acquia Site Factory username.
+- `acsf-key`: The Acquia Site Factory user KEY.
+- `acsf-site`: The Acquia Site Factory site.
+- `env`: The environment where to deploy. It's default value is "test"
+- `jira-url`: The Jira Cloud URL
+- `jira-transition-id`: The Jira transition ID
