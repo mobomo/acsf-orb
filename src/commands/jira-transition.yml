@@ -9,10 +9,6 @@ parameters:
     type: string
     default: ''
     description: 'The Acquia Site Factory username.'
-  acsf-key:
-    type: string
-    default: ''
-    description: 'The Acquia Site Factory user KEY.'
   acsf-site:
     type: string
     default: ''
@@ -30,6 +26,9 @@ parameters:
     type: string
     default: ""
     description: "The Jira transition ID"
+  jira-auth:
+    type: env_var_name
+    default: JIRA_AUTH
 steps:
   - run:
       when: on_success
@@ -51,7 +50,7 @@ steps:
               ## Transition to "Deployed to << parameters.env >>" ().
               curl \
                 -X POST \
-                -H "Authorization: Basic ${JIRAAUTH}" \
+                -H "Authorization: Basic << parameters.jira-auth >>" \
                 -H "Content-Type: application/json" \
                 --data '{"transition": { "id": "<< parameters.jira-transition-id >>" }}' \
                 << parameters.jira-url >>/rest/api/2/issue/$issue/transitions

@@ -19,10 +19,6 @@ parameters:
     type: string
     default: ''
     description: 'The Acquia Site Factory username.'
-  acsf-key:
-    type: string
-    default: ''
-    description: 'The Acquia Site Factory user key.'
   acsf-site:
     type: string
     default: ''
@@ -32,12 +28,26 @@ steps:
       name: Deployment to ACSF
       command: |
         TAG_TO_DEPLOY=<< parameters.tag >>
-        if [ -n ${TAG_TO_DEPLOY} ]; then
+        ACSF_ENV=<< parameters.env >>
+        if [-n ${ACQUIA_KEY_DEV} && -n ${ACQUIA_KEY_TEST}]; then
+          case "$ACSF_ENV" in
+            dev)
+                ACQUIA_KEY=${ACQUIA_KEY_DEV};;
+            test)
+                ACQUIA_KEY=${ACQUIA_KEY_TEST};;
+            *)
+                ACQUIA_KEY=""
+                echo "$ACSF_ENV not supported.";;
+          esac
+        else
+          echo "Please set your ACSF User key as an env variable for all your envs."
+        fi
+        if [ -n ${TAG_TO_DEPLOY} && -n ${ACQUIA_KEY}]; then
           echo Deploying ${TAG_TO_DEPLOY} to ACSF << parameters.env >>...
           curl 'https://www.<< parameters.env >>-<< parameters.acsf-site >>.acsitefactory.com/api/v1/update' \
-            -v -u << parameters.acsf-user >>:<< parameters.acsf-key >> -X POST \
+            -v -u << parameters.acsf-user >>:${ACQUIA_KEY} -X POST \
             -H 'Content-Type: application/json' \
             -d '{"scope": "sites", "sites_ref": "tags/'"${TAG_TO_DEPLOY}"'", "sites_type": "<< parameters.deploy-type >>", "stack_id": 1}'
         else
-          echo "We didn't get any release tag to deploy. Please check your Job and make sure you are setting a tag param."
+          printf "ERROR: tag parameter and ACQUIA_KEY_[ENV] env variable are required. \nPlease make sure your job is passing the required params and you have setup ACQUIA_KEY_DEV and ACQUIA_KEY_TEST.\n"
         fi

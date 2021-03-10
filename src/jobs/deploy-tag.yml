@@ -4,10 +4,6 @@ description: >
 executor: default
 
 parameters:
-  acsf-key:
-    type: string
-    default: ""
-    description: "Acquia Environment Key"
   acsf-user:
     type: string
     default: ""
@@ -42,7 +38,6 @@ steps:
       deploy-type: << parameters.acsf-deploy-type >>
       acsf-site: << parameters.acsf-site >>
       acsf-user: << parameters.acsf-user >>
-      acsf-key: ${ACQUIA_KEY_DEV}
   - slack/notify:
       event: pass
       channel: << parameters.slack-channel >>

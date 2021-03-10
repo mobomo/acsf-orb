@@ -92,7 +92,6 @@ steps:
       deploy-type: << parameters.acsf-deploy-type >>
       acsf-site: << parameters.acsf-site >>
       acsf-user: << parameters.acsf-user >>
-      acsf-key: ${ACQUIA_KEY_DEV}
   - add_ssh_keys:
       fingerprints:
         - << parameters.git-fingerprints >>

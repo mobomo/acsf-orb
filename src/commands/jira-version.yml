@@ -13,6 +13,9 @@ parameters:
     default: ""
     type: string
     description: 'The Jira Cloud URL'
+  jira-auth:
+    type: env_var_name
+    default: JIRA_AUTH
 steps:
   - run:
       name: "Create release on Jira"
@@ -20,7 +23,7 @@ steps:
         NOW=$(date +"%Y-%m-%d")
         TAG_TO_DEPLOY=<< parameters.tag >>
         JIRA_PROJECT=<< parameters.project >>
-        curl -X POST -H "Authorization: Basic ${JIRAAUTH}" \
+        curl -X POST -H "Authorization: Basic ${JIRA_AUTH}" \
                       -H "Content-Type: application/json" \
         --data '{"name": "'"${TAG_TO_DEPLOY}"'","startDate": "'"${NOW}"'","project": "'"${JIRA_PROJECT}"'", "released": false}' \
         << parameters.jira-url >>/rest/api/2/version

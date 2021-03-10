@@ -1,4 +1,13 @@
 # Commands
+The commands provided by this Orb uses the following APIs:
+- Jira API with Basic Authentication
+- Site Factory API
+
+Since these APIs require an auth method, is a good practice to setup the auth/keys using Circle CI Env Variables, instead 
+of adding that "sensitive" data as plain text in your config file. 
+
+So, for the Jira basic auth, we use the `JIRA_AUTH` env var and for the Site Factory we use `ACQUIA_KEY_[ENV]` 
+(ie: `ACQUIA_KEY_DEV`, or `ACQUIA_KEY_TEST`)
 
 ## git-publisher
 Pushes tag to project repository.
@@ -64,3 +73,17 @@ This command receives the following parameters:
 - `env`: The environment where to deploy. It's default value is "test"
 - `jira-url`: The Jira Cloud URL
 - `jira-transition-id`: The Jira transition ID
+
+**NOTE:** To avoid setting the auth token in your config files, you must define it as an CircleCI Environment Variable.
+
+Using the CircleCI UI, you can go to your Project > Project Settings > Environment Values > Add Environment Value called 
+`JIRA_AUTH`
+
+In order to encode the username:password string, you can run:
+```shell
+echo -n 'jira_user_email:jira_api_token' | openssl base64
+```
+
+Copy the base64 encoded string and paste it in the Environment Variable `Value` field:
+
+![Setting CircleCI Env Vars](/assets/cci_env_vars.png)
