@@ -49,7 +49,9 @@ steps:
           echo "Please set your ACSF User key as an env variable for all your envs."
         fi
         # We get the current tag deployed on acsf env.
-        CURRENT_TAG=$(curl -s -X GET https://www.<< parameters.env >>-<< parameters.acsf-site >>.acsitefactory.com/api/v1/vcs?type="sites" -u << parameters.acsf-user >>:${ACQUIA_KEY} | jq -r '.current' | sed 's/tags\///')
+        CURRENT_TAG=$(curl -s \ 
+          -X GET https://www.<< parameters.env >>-<< parameters.acsf-site >>.acsitefactory.com/api/v1/vcs?type="sites" \
+          -u << parameters.acsf-user >>:${ACQUIA_KEY} | jq -r '.current' | sed 's/tags\///')
         if [ -n ${CURRENT_TAG} ]; then
           JIRA_ISSUES=$(git log ${CURRENT_TAG}..<< parameters.tag >> | grep -e '[A-Z]\+-[0-9]\+' -o | sort -u | tr '\n' ',' | sed '$s/,$/\n/')
           echo $JIRA_ISSUES

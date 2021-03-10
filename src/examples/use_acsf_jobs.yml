@@ -21,4 +21,4 @@ usage:
             acsf-deploy-type: "code, db"
             slack-channel: "@your_channel"
             requires:
-            - approve-deployment
+              - approve-deployment

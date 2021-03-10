@@ -22,8 +22,6 @@ parameters:
     enum: [ 'code, db', 'code' ]
     default: 'code, db'
     description: "Acquia Site Factory deployment type"
-  tag: env_var_name
-    default: CIRCLE_TAG
   slack-channel:
     type: string
     default: ""
@@ -31,7 +29,7 @@ parameters:
 steps:
   - checkout
   - blt-deploy:
-      tag: << parameters.tag >>
+      tag: ${CIRCLE_TAG}
       env: << parameters.acsf-env >>
       deploy-type: << parameters.acsf-deploy-type >>
       acsf-site: << parameters.acsf-site >>

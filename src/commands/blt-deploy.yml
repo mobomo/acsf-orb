@@ -49,5 +49,5 @@ steps:
             -H 'Content-Type: application/json' \
             -d '{"scope": "sites", "sites_ref": "tags/'"${TAG_TO_DEPLOY}"'", "sites_type": "<< parameters.deploy-type >>", "stack_id": 1}'
         else
-          printf "ERROR: tag parameter and ACQUIA_KEY_[ENV] env variable are required. \nPlease make sure your job is passing the required params and you have setup ACQUIA_KEY_DEV and ACQUIA_KEY_TEST.\n"
+          printf "ERROR: tag and ACQUIA_KEY_[ENV] env variable are required. \nPlease make sure your job is passing the required params and you have setup the environment variables\n"
         fi
