@@ -1,0 +1,13 @@
+description: >
+  Example of job using the command `blt-deploy`
+usage:
+  version: 2.1
+  orbs:
+    acsf: mobomo/acsf-orb@1.0.0
+  jobs:
+    deploy:
+      executor:
+        acsf/default
+      steps:
+        - checkout
+        - acsf/blt-deploy
