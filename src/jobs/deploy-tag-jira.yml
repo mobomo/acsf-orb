@@ -35,7 +35,7 @@ parameters:
     default: ""
     description: "Slack Channel"
   jira-transition-id:
-    type: integer
+    type: string
     default: ""
     description: "The Jira transition ID"
   jira-url:
