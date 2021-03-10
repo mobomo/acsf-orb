@@ -1,0 +1,59 @@
+description: >
+  Deploy a pushed tag to the specified environment transitioning Jira issues.
+
+executor: default
+
+parameters:
+  acsf-user:
+    type: string
+    default: ""
+    description: "Acquia Environment User"
+  acsf-site:
+    type: string
+    default: ""
+    description: "Acquia Environment Site"
+  acsf-env:
+    type: enum
+    enum: [ 'dev', 'test', 'prod' ]
+    default: 'dev'
+    description: "Acquia Site Factory environment name"
+  acsf-deploy-type:
+    type: enum
+    enum: [ 'code, db', 'code' ]
+    default: 'code, db'
+    description: "Acquia Site Factory deployment type"
+  slack-channel:
+    type: string
+    default: ""
+    description: "Slack Channel"
+  jira-transition-id:
+    type: string
+    default: ""
+    description: "The Jira transition ID"
+  jira-url:
+    default: ""
+    type: string
+    description: 'The Jira Cloud URL'
+steps:
+  - checkout
+  - blt-deploy:
+      tag: ${CIRCLE_TAG}
+      env: << parameters.acsf-env >>
+      deploy-type: << parameters.acsf-deploy-type >>
+      acsf-site: << parameters.acsf-site >>
+      acsf-user: << parameters.acsf-user >>
+  - jira-transition:
+      tag: ${CIRCLE_TAG}
+      env: << parameters.acsf-env >>
+      acsf-user: << parameters.acsf-user >>
+      acsf-site: << parameters.acsf-site >>
+      jira-transition-id: << parameters.jira-transition-id >>
+      jira-url: << parameters.jira-url >>
+  - slack/notify:
+      event: pass
+      channel: << parameters.slack-channel >>
+      template: success_tagged_deploy_1
+  - slack/notify:
+      event: fail
+      channel: << parameters.slack-channel >>
+      template: basic_fail_1

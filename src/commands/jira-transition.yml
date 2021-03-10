@@ -1,0 +1,76 @@
+description: >
+  Gets all tickets included between "current" deployed tag and "latest" tag, and transitions those tickets after deployments.
+parameters:
+  tag:
+    type: string
+    default: build-v1.0.${CIRCLE_BUILD_NUM}
+    description: '"latest" tag to be used by the git log to check tickets that were included'
+  acsf-user:
+    type: string
+    default: ''
+    description: 'The Acquia Site Factory username.'
+  acsf-site:
+    type: string
+    default: ''
+    description: 'The Acquia Site Factory site.'
+  env:
+    type: enum
+    enum: [ 'dev', 'test', 'prod' ]
+    default: 'dev'
+    description: 'The environment where to deploy.'
+  jira-url:
+    default: ""
+    type: string
+    description: 'The Jira Cloud URL'
+  jira-transition-id:
+    type: string
+    default: ""
+    description: "The Jira transition ID"
+  jira-auth:
+    type: env_var_name
+    default: JIRA_AUTH
+steps:
+  - run:
+      when: on_success
+      name: Transition Jira tickets
+      command: |
+        ACSF_ENV=<< parameters.env >>
+        if [-n ${ACQUIA_KEY_DEV} && -n ${ACQUIA_KEY_TEST}]; then
+          case "$ACSF_ENV" in
+            dev)
+                ACQUIA_KEY=${ACQUIA_KEY_DEV};;
+            test)
+                ACQUIA_KEY=${ACQUIA_KEY_TEST};;
+            *)
+                ACQUIA_KEY=""
+                echo "$ACSF_ENV not supported.";;
+          esac
+        else
+          echo "Please set your ACSF User key as an env variable for all your envs."
+        fi
+        # We get the current tag deployed on acsf env.
+        CURRENT_TAG=$(curl -s \
+          -X GET https://www.<< parameters.env >>-<< parameters.acsf-site >>.acsitefactory.com/api/v1/vcs?type="sites" \
+          -u << parameters.acsf-user >>:${ACQUIA_KEY} | jq -r '.current' | sed 's/tags\///')
+        if [ -n ${CURRENT_TAG} ]; then
+          JIRA_ISSUES=$(git log ${CURRENT_TAG}..<< parameters.tag >> | grep -e '[A-Z]\+-[0-9]\+' -o | sort -u | tr '\n' ',' | sed '$s/,$/\n/')
+          echo $JIRA_ISSUES
+        else
+          echo "We were not able to get current tag deployed to ACSF Env."
+        fi
+        if [ -n ${JIRA_ISSUES} ]; then
+          echo "Included tickets between ${CURRENT_TAG} and << parameters.tag >>: ${JIRA_ISSUES}"
+          for issue in ${JIRA_ISSUES}
+            do
+              echo "Transitioning $issue"
+              ## Transition to "Deployed to << parameters.env >>" ().
+              curl \
+                -X POST \
+                -H "Authorization: Basic << parameters.jira-auth >>" \
+                -H "Content-Type: application/json" \
+                --data '{"transition": { "id": "<< parameters.jira-transition-id >>" }}' \
+                << parameters.jira-url >>/rest/api/2/issue/$issue/transitions
+            done
+        else
+          echo "There are no issues to transition."
+        fi
