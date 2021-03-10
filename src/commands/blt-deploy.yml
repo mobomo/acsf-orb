@@ -30,7 +30,7 @@ steps:
         TAG_TO_DEPLOY=<< parameters.tag >>
         ACSF_ENV=<< parameters.env >>
         if [ -n ${ACQUIA_KEY_DEV} && -n ${ACQUIA_KEY_TEST} ]; then
-          case "$ACSF_ENV" in
+          case $ACSF_ENV in
             dev)
                 ACQUIA_KEY=${ACQUIA_KEY_DEV};;
             test)
