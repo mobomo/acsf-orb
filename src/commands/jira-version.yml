@@ -23,4 +23,4 @@ steps:
         curl -X POST -H "Authorization: Basic ${JIRAAUTH}" \
                       -H "Content-Type: application/json" \
         --data '{"name": "'"${TAG_TO_DEPLOY}"'","startDate": "'"${NOW}"'","project": "'"${JIRA_PROJECT}"'", "released": false}' \
-        << parameters.jira-url >>
+        << parameters.jira-url >>/rest/api/2/version
