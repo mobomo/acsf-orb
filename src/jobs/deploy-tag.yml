@@ -1,0 +1,54 @@
+description: >
+  Deploy a pushed tag to the specified environment.
+
+executor: default
+
+parameters:
+  acsf-key:
+    type: string
+    default: ""
+    description: "Acquia Environment Key"
+  acsf-user:
+    type: string
+    default: ""
+    description: "Acquia Environment User"
+  acsf-site:
+    type: string
+    default: ""
+    description: "Acquia Environment Site"
+  acsf-env:
+    type: enum
+    enum: [ 'dev', 'test', 'prod' ]
+    default: 'dev'
+    description: "Acquia Site Factory environment name"
+  acsf-deploy-type:
+    type: enum
+    enum: [ 'code ,db', 'code' ]
+    default: 'code ,db'
+    description: "Acquia Site Factory deployment type"
+  tag:
+    default: build-v1.0.${CIRCLE_BUILD_NUM}
+    type: string
+    description: 'Tag to be created from the BLT build'
+  slack-channel:
+    type: string
+    default: ""
+    description: "Slack Channel"
+steps:
+  - checkout
+  - blt-deploy:
+      tag: << parameters.tag >>
+      env: << parameters.acsf-env >>
+      deploy_type: << parameters.acsf-deploy-type >>
+      acsf-site: << parameters.acsf-site >>
+      acsf-user: << parameters.acsf-user >>
+      acsf-key: ${ACQUIA_KEY_DEV}
+  - slack/notify:
+      event: pass
+      channel: << parameters.slack-channel >>
+      template: success_tagged_deploy_1
+  - slack/notify:
+      event: fail
+      channel: << parameters.slack-channel >>            
+      template: basic_fail_1
+
