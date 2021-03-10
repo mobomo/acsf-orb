@@ -47,7 +47,7 @@ steps:
   - blt-deploy:
       tag: << parameters.tag >>
       env: << parameters.acsf-env >>
-      deploy_type: << parameters.acsf-deploy-type >>
+      deploy-type: << parameters.acsf-deploy-type >>
       acsf-site: << parameters.acsf-site >>
       acsf-user: << parameters.acsf-user >>
       acsf-key: ${ACQUIA_KEY_DEV}
