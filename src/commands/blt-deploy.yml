@@ -29,8 +29,8 @@ steps:
       command: |
         TAG_TO_DEPLOY=<< parameters.tag >>
         ACSF_ENV=<< parameters.env >>
-        if [-n ${ACQUIA_KEY_DEV} && -n ${ACQUIA_KEY_TEST}]; then
-          case "$ACSF_ENV" in
+        if [ -n ${ACQUIA_KEY_DEV} && -n ${ACQUIA_KEY_TEST} ]; then
+          case $ACSF_ENV in
             dev)
                 ACQUIA_KEY=${ACQUIA_KEY_DEV};;
             test)
@@ -42,7 +42,7 @@ steps:
         else
           echo "Please set your ACSF User key as an env variable for all your envs."
         fi
-        if [ -n ${TAG_TO_DEPLOY} && -n ${ACQUIA_KEY}]; then
+        if [ -n ${TAG_TO_DEPLOY} && -n ${ACQUIA_KEY} ]; then
           echo Deploying ${TAG_TO_DEPLOY} to ACSF << parameters.env >>...
           curl 'https://www.<< parameters.env >>-<< parameters.acsf-site >>.acsitefactory.com/api/v1/update' \
             -v -u << parameters.acsf-user >>:${ACQUIA_KEY} -X POST \
