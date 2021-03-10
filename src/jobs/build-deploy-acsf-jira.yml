@@ -8,10 +8,6 @@ parameters:
     type: string
     default: ""
     description: "Environment fingerprints"
-  acsf-key:
-    type: string
-    default: ""
-    description: "Acquia Environment Key"
   acsf-user:
     type: string
     default: ""
@@ -107,7 +103,6 @@ steps:
       tag: << parameters.tag >>
       env: << parameters.acsf-env >>
       acsf-user: << parameters.acsf-user >>
-      acsf-key: ${ACQUIA_KEY_DEV}
       acsf-site: << parameters.acsf-site >>
       jira-transition-id: << parameters.jira-transition-id >>
       jira-url: << parameters.jira-url >>
