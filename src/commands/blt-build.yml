@@ -1,0 +1,18 @@
+description: >
+  Builds the blt artifact (creates a tag and push it to Acquia repository).
+parameters:
+  tag:
+    type: string
+    default: build-v1.0.${CIRCLE_BUILD_NUM}
+# TO-DO: Add a "segment" param to increment the tag following semver and be more flexible.
+steps:
+  - run:
+      name: BLT build
+      command: |
+        vendor/bin/blt artifact:deploy \
+          --environment ci \
+          --commit-msg "CCI Build - << parameters.tag >>" \
+          --tag "<< parameters.tag >>" \
+          --ignore-dirty \
+          --no-interaction \
+          --verbose
