@@ -65,6 +65,5 @@ steps:
       template: success_tagged_deploy_1
   - slack/notify:
       event: fail
-      channel: << parameters.slack-channel >>            
+      channel: << parameters.slack-channel >>
       template: basic_fail_1
-
