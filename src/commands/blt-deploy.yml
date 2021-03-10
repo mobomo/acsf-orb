@@ -4,23 +4,29 @@ parameters:
   tag:
     type: string
     default: build-v1.0.${CIRCLE_BUILD_NUM}
+    description: 'The tag to deploy.'
   env:
     type: enum
     enum: [ 'dev', 'test', 'prod' ]
     default: 'dev'
+    description: 'The environment where to deploy.'
   deploy-type:
     type: enum
     enum: [ 'code', 'code, db']
     default: 'code, db'
+    description: 'The type of deployment either Code Only or Code and Database.'
   acsf-user:
     type: string
     default: ''
+    description: 'The Acquia Site Factory username.'
   acsf-key:
     type: string
     default: ''
+    description: 'The Acquia Site Factory user key.'
   acsf-site:
     type: string
     default: ''
+    description: 'The Acquia Site Factory project site name.'
 steps:
   - run:
       name: Deployment to ACSF

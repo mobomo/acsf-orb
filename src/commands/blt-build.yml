@@ -4,6 +4,7 @@ parameters:
   tag:
     type: string
     default: build-v1.0.${CIRCLE_BUILD_NUM}
+    description: 'The tag name to build.'
 # TO-DO: Add a "segment" param to increment the tag following semver and be more flexible.
 steps:
   - run:
