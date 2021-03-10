@@ -1,0 +1,26 @@
+description: >
+  Pushes tag to project repository.
+parameters:
+  tag:
+    default: build-v1.0.${CIRCLE_BUILD_NUM}
+    type: string
+    description: 'Tag to be deployed that is created from the BLT build'
+  project:
+    default: ""
+    type: string
+    description: 'The Jira project to create the version'
+  jira-url:
+    default: ""
+    type: string
+    description: 'The Jira Cloud URL'
+steps:
+  - run:
+      name: "Create release on Jira"
+      command: |
+        NOW=$(date +"%Y-%m-%d")
+        TAG_TO_DEPLOY=<< parameters.tag >>
+        JIRA_PROJECT=<< parameters.project >>
+        curl -X POST -H "Authorization: Basic ${JIRAAUTH}" \
+                      -H "Content-Type: application/json" \
+        --data '{"name": "'"${TAG_TO_DEPLOY}"'","startDate": "'"${NOW}"'","project": "'"${JIRA_PROJECT}"'", "released": false}' \
+        << parameters.jira-url >>

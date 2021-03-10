@@ -1,0 +1,22 @@
+description: >
+  Pushes tag to project repository.
+parameters:
+  git-username:
+    default: ""
+    type: string
+    description: 'The automation username to push the tag.'
+  git-email:
+    default: ""
+    type: string
+    description: 'The automation user email to push the tag.'
+  tag:
+    default: build-v1.0.${CIRCLE_BUILD_NUM}
+    type: string
+    description: 'Tag to be deployed that is created from the BLT build'
+steps:
+  - run:
+      name: "Git Publisher"
+      command: |
+        git config --global user.name << parameters.git-username >>
+        git config --global user.email << parameters.git-email >>
+        git push origin << parameters.tag >>

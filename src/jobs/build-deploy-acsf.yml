@@ -1,0 +1,89 @@
+description: >
+  Build and Deploy to ACSF
+
+executor: default
+
+parameters:
+  acsf_fingerprints:
+    type: string
+    default: ""
+    description: "Environment fingerprints"
+  acsf_key:
+    type: string
+    default: ""
+    description: "Acquia Environment Key"
+  acsf_user:
+    type: string
+    default: ""
+    description: "Acquia Environment User"
+  acsf_site:
+    type: string
+    default: ""
+    description: "Acquia Environment Site"
+  acsf_env:
+    type: enum
+    enum: [ 'dev', 'test', 'prod' ]
+    default: 'dev'
+    description: "Acquia Site Factory environment name"
+  acsf_deploy_type:
+    type: enum
+    enum: [ 'code ,db', 'code' ]
+    default: 'code ,db'
+    description: "Acquia Site Factory deployment type"
+  tag:
+    default: build-v1.0.${CIRCLE_BUILD_NUM}
+    type: string
+    description: 'Tag to be created from the BLT build'
+  git_fingerprints:
+    type: string
+    default: ""
+    description: "Git fingerprints for pushing tags"
+  slack_channel:
+    type: string
+    default: ""
+    description: "Slack Channel"
+environment:
+  BASH_ENV: /etc/profile
+steps:
+  - run:
+      name: Setup Environment Variables
+      command: |
+        echo "export PATH=`pwd`/vendor/bin:$PATH" >> $BASH_ENV
+        source $BASH_ENV
+  - checkout
+  - restore_cache:
+      keys:
+        - composer-cache
+  - restore_cache:
+      keys:
+        - composer-mbn-{{ checksum "composer.lock" }}
+  - add_ssh_keys:
+      fingerprints:
+          - << parameters.acsf_fingerprints >>
+  - run:
+      name: SSH Disable Host Key Checking
+      command: |
+        echo "StrictHostKeyChecking=no">> ~/.ssh/config
+  - blt-build:
+      tag: << parameters.tag >>
+  - blt-deploy:
+      tag: << parameters.tag >>
+      env: << parameters.acsf_env >>
+      deploy_type: << parameters.acsf_deploy_type >>
+      acsf_site: << parameters.acsf_site >>
+      acsf_user: << parameters.acsf_user >>
+      acsf_key: ${ACQUIA_KEY_DEV}
+  - add_ssh_keys:
+      fingerprints:
+        - << parameters.git_fingerprints >>
+  - git-publisher:
+      tag: << parameters.tag >>
+  - slack/notify:
+      event: pass
+      channel: << parameters.slack_channel >>
+      template: success_tagged_deploy_1
+  - slack/notify:
+      event: fail
+      channel: << parameters.slack_channel >>            
+      template: basic_fail_1
+
