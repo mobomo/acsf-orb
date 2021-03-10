@@ -7,9 +7,18 @@ usage:
   workflows:
     use-my-orb:
       jobs:
+        - approve-deployment:
+            type: approval
+            filters:
+              tags:
+                only: /build-v\d+\.\d+\.\d+/
+              branches:
+                ignore: /.*/
         - acsf/deploy-tag:
             acsf-user: "Your Acquia user name"
             acsf-site: "Acquia site name"
             acsf-env: "test"
             acsf-deploy-type: "code, db"
             slack-channel: "@your_channel"
+            requires:
+              - approve-deployment
