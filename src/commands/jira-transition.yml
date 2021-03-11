@@ -3,7 +3,7 @@ description: >
 parameters:
   tag:
     type: string
-    default: "build-v1.0.$CIRCLE_BUILD_NUM"
+    default: build-v1.0."$CIRCLE_BUILD_NUM"
     description: '"latest" tag to be used by the git log to check tickets that were included'
   acsf-user:
     type: string
@@ -34,11 +34,11 @@ steps:
       when: on_success
       name: Transition Jira tickets
       environment:
-        TAG: <<parameters.tag>>
-        ACSF_USER: <<parameters.acsf-user>>
-        ACSF_SITE: <<parameters.acsf-site>>
-        ACSF_ENV: <<parameters.env>>
-        JIRA_URL: <<parameters.jira-url>>
-        JIRA_TRANS_ID: <<parameters.jira-transition-id>>
-        JIRA_AUTH_TOKEN: <<parameters.jira-auth>>
+        TAG: << parameters.tag >>
+        ACSF_USER: << parameters.acsf-user >>
+        ACSF_SITE: << parameters.acsf-site >>
+        ACSF_ENV: << parameters.env >>
+        JIRA_URL: << parameters.jira-url >>
+        JIRA_TRANS_ID: << parameters.jira-transition-id >>
+        JIRA_AUTH_TOKEN: << parameters.jira-auth >>
       command: <<include(scripts/jira-transition.sh)>>

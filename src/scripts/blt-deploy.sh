@@ -1,6 +1,8 @@
 #!/bin/bash
-set -eu
+set -eux
 
+echo "TAG_TO_DEPLOY:: ${TAG_TO_DEPLOY}"
+echo "CIRCLE_BUILD_NUM:: ${CIRCLE_BUILD_NUM}"
 #echo "${TAG_TO_DEPLOY}"
 #echo "${ACSF_USER}"
 #echo "${ACSF_SITE}"
