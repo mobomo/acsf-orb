@@ -31,10 +31,10 @@ get-acquia-key() {
 
 # Get the current tag deployed on acsf env.
 get-current-tag() {
-  local ACQUIA_KEY_ENV=''
-  ACQUIA_KEY_ENV=$(get-acquia-key)
+  local ACQUIA_KEY
+  ACQUIA_KEY=$(get-acquia-key)
   curl -s -X GET https://www."${ACSF_ENV}"-"${ACSF_SITE}".acsitefactory.com/api/v1/vcs?type="sites" \
-    -u "${ACSF_USER}":"${ACQUIA_KEY_ENV}" | jq -r '.current' | sed 's/tags\///'
+    -u "${ACSF_USER}":"${ACQUIA_KEY}" | jq -r '.current' | sed 's/tags\///'
 
 }
 CURRENT_TAG=$(get-current-tag)
