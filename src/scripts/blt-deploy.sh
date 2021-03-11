@@ -16,7 +16,7 @@ get-acquia-key() {
       test)
           ACQUIA_KEY=${ACQUIA_KEY_TEST};;
       *)
-          ACQUIA_KEY=""
+          export ACQUIA_KEY=""
           echo "Provided $ACSF_ENV is not a recognized Env."
           exit 1
           ;;
@@ -27,14 +27,16 @@ get-acquia-key() {
 }
 
 deploy-tag-acsf() {
-  local ACQUIA_KEY=''
-  get-acquia-key ACQUIA_KEY
-  if [[ -n ${TAG_TO_DEPLOY} && -n ${ACQUIA_KEY} ]]; then
+  local ACQUIA_ENV_KEY=''
+  get-acquia-key ACQUIA_ENV_KEY
+
+  if [[ -n ${TAG_TO_DEPLOY} && -n ${ACQUIA_ENV_KEY} ]]; then
     echo "Deploying ${TAG_TO_DEPLOY} to ACSF ${ACSF_ENV}..."
-    curl -s -u "${ACSF_USER}":"${ACQUIA_KEY}" -X POST \
+    curl -s -u "${ACSF_USER}":"${ACQUIA_ENV_KEY}" -X POST \
       -H 'Content-Type: application/json' \
       -d '{"scope": "sites", "sites_ref": "tags/'"${TAG_TO_DEPLOY}"'", "sites_type": "'"${DEPLOY_TYPE}"'", "stack_id": 1}' \
       https://www."${ACSF_ENV}"-"${ACSF_SITE}".acsitefactory.com/api/v1/update
+    printf "\n"
   else
     printf "ERROR: tag and ACQUIA_KEY_[ENV] env variable are required. \nPlease make sure your job is passing the required params and required environment variables are set\n"
   fi
