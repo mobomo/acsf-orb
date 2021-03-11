@@ -1,8 +1,9 @@
 #!/bin/bash
-set -eu
+set -eux
 
 # VARS.
-#echo "${TAG}"
+echo "TAG:: ${TAG}"
+echo "CIRCLE_BUILD_NUM:: ${CIRCLE_BUILD_NUM}"
 #echo "${ACSF_USER}"
 #echo "${ACSF_SITE}"
 #echo "${ACSF_ENV}"
