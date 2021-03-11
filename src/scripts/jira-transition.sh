@@ -10,7 +10,7 @@ set -eu
 #echo "${JIRA_TRANS_ID}"
 
 # Determine acquia environment, set correct key and get current tag.
-get-acquia-key-and-tag() {
+get-acquia-key() {
   local ACQUIA_KEY
   if [[ -n ${ACQUIA_KEY_DEV} && -n ${ACQUIA_KEY_TEST} ]]; then
     case "$ACSF_ENV" in
@@ -19,12 +19,11 @@ get-acquia-key-and-tag() {
       test)
           ACQUIA_KEY=${ACQUIA_KEY_TEST};;
       *)
-          ACQUIA_KEY=""
+          ACQUIA_KEY=null
           echo "Provided $ACSF_ENV is not a recognized Env."
-          exit 1
           ;;
     esac
-    get-current-tag
+    echo "$ACQUIA_KEY"
   else
     echo "Please set the ACSF User key as an env variable for all your envs. IE: ACQUIA_KEY_DEV and ACQUIA_KEY_TEST".
   fi
@@ -32,11 +31,13 @@ get-acquia-key-and-tag() {
 
 # Get the current tag deployed on acsf env.
 get-current-tag() {
+  local ACQUIA_KEY_ENV=''
+  ACQUIA_KEY_ENV=$(get-acquia-key)
   curl -s -X GET https://www."${ACSF_ENV}"-"${ACSF_SITE}".acsitefactory.com/api/v1/vcs?type="sites" \
-    -u "${ACSF_USER}":"${ACQUIA_KEY}" | jq -r '.current' | sed 's/tags\///'
-}
+    -u "${ACSF_USER}":"${ACQUIA_KEY_ENV}" | jq -r '.current' | sed 's/tags\///'
 
-CURRENT_TAG=$(get-acquia-key-and-tag)
+}
+CURRENT_TAG=$(get-current-tag)
 echo "$CURRENT_TAG"
 
 # With the the current tag, get a list of issues IDs that were committed between current and latest.
