@@ -27,7 +27,7 @@ parameters:
     default: 'code, db'
     description: "Acquia Site Factory deployment type"
   tag:
-    default: build-v1.0.${CIRCLE_BUILD_NUM}
+    default: build-v1.0.$CIRCLE_BUILD_NUM
     type: string
     description: 'Tag to be created from the BLT build'
   git-fingerprints:
