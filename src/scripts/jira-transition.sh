@@ -3,7 +3,12 @@ set -eux
 
 # VARS.
 echo "TAG:: ${TAG}"
+echo "TAG_1:: ${TAG_1}"
 echo "CIRCLE_BUILD_NUM:: ${CIRCLE_BUILD_NUM}"
+TAG_TO_DEPLOY=$(eval echo "$TAG")
+echo "TAG_TO_DEPLOY:: ${TAG_TO_DEPLOY}"
+TAG_1_TO_DEPLOY=$(eval echo "$TAG_1")
+echo "TAG_1_TO_DEPLOY:: ${TAG_1_TO_DEPLOY}"
 #echo "${ACSF_USER}"
 #echo "${ACSF_SITE}"
 #echo "${ACSF_ENV}"

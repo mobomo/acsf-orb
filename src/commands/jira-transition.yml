@@ -34,7 +34,8 @@ steps:
       when: on_success
       name: Transition Jira tickets
       environment:
-        TAG: << parameters.tag >>
+        TAG: "<< parameters.tag >>"
+        TAG_1: '<< parameters.tag >>'
         ACSF_USER: << parameters.acsf-user >>
         ACSF_SITE: << parameters.acsf-site >>
         ACSF_ENV: << parameters.env >>
