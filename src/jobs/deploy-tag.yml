@@ -26,6 +26,18 @@ parameters:
     type: string
     default: ""
     description: "Slack Channel"
+  with-jira:
+    type: boolean
+    default: true
+    description: Transition tickets.
+  jira-transition-id:
+    type: string
+    default: ""
+    description: "The Jira transition ID"
+  jira-url:
+    default: ""
+    type: string
+    description: 'The Jira Cloud URL'
 steps:
   - checkout
   - blt-deploy:
@@ -34,6 +46,16 @@ steps:
       deploy-type: << parameters.acsf-deploy-type >>
       acsf-site: << parameters.acsf-site >>
       acsf-user: << parameters.acsf-user >>
+  - when:
+      condition: << parameters.with-jira >>
+      steps:
+        - jira-transition:
+            tag: ${CIRCLE_TAG}
+            env: << parameters.acsf-env >>
+            acsf-user: << parameters.acsf-user >>
+            acsf-site: << parameters.acsf-site >>
+            jira-transition-id: << parameters.jira-transition-id >>
+            jira-url: << parameters.jira-url >>
   - slack/notify:
       event: pass
       channel: << parameters.slack-channel >>

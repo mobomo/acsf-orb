@@ -46,6 +46,22 @@ parameters:
     type: string
     default: ""
     description: "Slack Channel"
+  with-jira:
+    type: boolean
+    default: true
+    description: Create version and transition tickets.
+  jira-transition-id:
+    type: string
+    default: ""
+    description: "The Jira transition ID"
+  jira-project:
+    default: ""
+    type: string
+    description: 'The Jira project'
+  jira-url:
+    default: ""
+    type: string
+    description: 'The Jira Cloud URL'
 environment:
   BASH_ENV: /etc/profile
 steps:
@@ -83,6 +99,20 @@ steps:
       tag: << parameters.tag >>
       git-username: << parameters.git-username >>
       git-email: << parameters.git-email >>
+  - when:
+      condition: << parameters.with-jira >>
+      steps:
+        - jira-version:
+            tag: << parameters.tag >>
+            project: << parameters.jira-project >>
+            jira-url: << parameters.jira-url >>
+        - jira-transition:
+            tag: << parameters.tag >>
+            env: << parameters.acsf-env >>
+            acsf-user: << parameters.acsf-user >>
+            acsf-site: << parameters.acsf-site >>
+            jira-transition-id: << parameters.jira-transition-id >>
+            jira-url: << parameters.jira-url >>
   - slack/notify:
       event: pass
       channel: << parameters.slack-channel >>
