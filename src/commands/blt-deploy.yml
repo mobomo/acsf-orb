@@ -27,7 +27,7 @@ steps:
   - run:
       name: Deployment to ACSF
       environment:
-        TAG_TO_DEPLOY: <<parameters.tag>>
+        TAG_TO_DEPLOY: "<<parameters.tag>>"
         ACSF_USER: <<parameters.acsf-user>>
         ACSF_SITE: <<parameters.acsf-site>>
         ACSF_ENV: <<parameters.env>>
