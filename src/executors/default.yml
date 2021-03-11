@@ -1,7 +1,7 @@
 description: >
   This the Drupal Stand CI.
 docker:
-  - image: 'mobomo/drupalstand-ci:<<parameters.tag>>'
+  - image: 'mobomo/drupalstand-ci:<< parameters.tag >>'
 parameters:
   tag:
     default: latest
