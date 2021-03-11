@@ -1,8 +1,11 @@
 #!/bin/bash
-set -eux
+set -eu
 
+# VARS DEBUG.
+echo "TAG:: ${TAG}"
+echo "CIRCLE_BUILD_NUM:: $CIRCLE_BUILD_NUM"
+TAG_TO_DEPLOY=$(eval echo "$TAG")
 echo "TAG_TO_DEPLOY:: ${TAG_TO_DEPLOY}"
-echo "CIRCLE_BUILD_NUM:: ${CIRCLE_BUILD_NUM}"
 #echo "${TAG_TO_DEPLOY}"
 #echo "${ACSF_USER}"
 #echo "${ACSF_SITE}"

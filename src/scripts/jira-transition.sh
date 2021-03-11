@@ -1,14 +1,11 @@
 #!/bin/bash
-set -eux
+set -eu
 
-# VARS.
+# VARS DEBUG.
 echo "TAG:: ${TAG}"
-echo "TAG_1:: ${TAG_1}"
-echo "CIRCLE_BUILD_NUM:: ${CIRCLE_BUILD_NUM}"
+echo "CIRCLE_BUILD_NUM:: $CIRCLE_BUILD_NUM"
 TAG_TO_DEPLOY=$(eval echo "$TAG")
 echo "TAG_TO_DEPLOY:: ${TAG_TO_DEPLOY}"
-TAG_1_TO_DEPLOY=$(eval echo "$TAG_1")
-echo "TAG_1_TO_DEPLOY:: ${TAG_1_TO_DEPLOY}"
 #echo "${ACSF_USER}"
 #echo "${ACSF_SITE}"
 #echo "${ACSF_ENV}"
@@ -49,7 +46,7 @@ echo "$CURRENT_TAG"
 # With the the current tag, get a list of issues IDs that were committed between current and latest.
 get-jira-issues() {
   if [ -n "${CURRENT_TAG}" ]; then
-    JIRA_ISSUES=$(git log "${CURRENT_TAG}".."${TAG}" | grep -e '[A-Z]\+-[0-9]\+' -o | sort -u | tr '\n' ',' | sed '$s/,$/\n/')
+    JIRA_ISSUES=$(git log "${CURRENT_TAG}".."${TAG_TO_DEPLOY}" | grep -e '[A-Z]\+-[0-9]\+' -o | sort -u | tr '\n' ',' | sed '$s/,$/\n/')
     echo "$JIRA_ISSUES"
   else
     echo "We were not able to get current tag deployed to ACSF Env. Please check the 'acsf-' parameters are correctly set."
@@ -61,7 +58,7 @@ transition-issues() {
   get-jira-issues
   echo "$JIRA_ISSUES"
   if [ -n "${JIRA_ISSUES}" ]; then
-    echo "Included tickets between ${CURRENT_TAG} and ${TAG}: ${JIRA_ISSUES}"
+    echo "Included tickets between ${CURRENT_TAG} and ${TAG_TO_DEPLOY}: ${JIRA_ISSUES}"
     for issue in ${JIRA_ISSUES}
       do
         echo "Transitioning $issue..."
