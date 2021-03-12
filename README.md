@@ -1,4 +1,8 @@
-# Commands
+# ACSF Orb [![CircleCI Build Status](https://circleci.com/gh/mobomo/acsf-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/mobomo/acsf-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/mobomo/acsf-orb)](https://circleci.com/orbs/registry/orb/mobomo/acsf-orb) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/mobomo/acsf-orb/master/LICENSE)
+Handles builds and deployments to Acquia Site Factory sites. Includes optional Jira integration (to transition tickets, 
+create realeses, etc) and slack notifications.
+
+## Commands
 The commands provided by this Orb uses the following APIs:
 - Jira API with Basic Authentication
 - Site Factory API
@@ -12,7 +16,7 @@ this Orb.
 
 See an example in the "jira-transition" command below.
 
-## git-publisher
+### git-publisher
 Pushes tag to project repository.
 
 This command receives the following parameters:
@@ -21,7 +25,7 @@ This command receives the following parameters:
 - `git-email`: The automation git user email to push the tag.
 - `tag`: Tag to be deployed. It's default value is `build-v1.0.${CIRCLE_BUILD_NUM}`.
 
-## jira-version
+### jira-version
 This command creates a "version" (release) in Jira using Jira API.
 
 Receives the following parameters:
@@ -30,7 +34,7 @@ Receives the following parameters:
 - `description`: The Version description.
 - `jira-url`: The Jira Cloud URL.
 
-## blt-build
+### blt-build
 Builds the blt artifact (creates a tag and push it to Acquia repository).
 
 This command receives a `tag` parameter which is used to se the tag name that will be created and pushed.
@@ -39,7 +43,7 @@ The default value for this tag is `build-v1.0.${CIRCLE_BUILD_NUM}`
 
 TO-DO: Add a "segment" param to increment the tag following semantic versioning and be more flexible.
 
-## blt-deploy
+### blt-deploy
 Deploys a tag to Acquia Site Factory env using its API.
 
 
@@ -61,7 +65,7 @@ to check the update endpoint and the parameters.
 
 Site Factory API docs: https://docs.acquia.com/site-factory/extend/api
 
-## jira-transition
+### jira-transition
 Gets all tickets included between "current" deployed tag and "latest" tag, and transitions those tickets after a
 successful deployment.
 
@@ -87,7 +91,7 @@ echo -n 'jira_user_email:jira_api_token' | openssl base64
 
 Copy the base64 encoded string and paste it in the Environment Variable `Value` field:
 
-![Setting CircleCI Env Vars](/assets/cci_env_vars.png)
+![Setting CircleCI Env Vars](assets/cci_env_vars.png)
 
 ### TO-DO
 1. Improve exit codes for commands, specially the ones using API calls.

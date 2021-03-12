@@ -13,6 +13,8 @@ get-acquia-key() {
           ACQUIA_KEY=${ACQUIA_KEY_DEV};;
       test)
           ACQUIA_KEY=${ACQUIA_KEY_TEST};;
+      prod)
+          ACQUIA_KEY=${ACQUIA_KEY_PROD};;
       *)
           export ACQUIA_KEY=""
           echo "Provided $ACSF_ENV is not a recognized Env."
