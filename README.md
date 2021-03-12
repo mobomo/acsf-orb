@@ -2,7 +2,7 @@
 Handles builds and deployments to Acquia Site Factory sites. Includes optional Jira integration (to transition tickets, 
 create realeses, etc) and slack notifications.
 
-### Commands
+## Commands
 The commands provided by this Orb uses the following APIs:
 - Jira API with Basic Authentication
 - Site Factory API
