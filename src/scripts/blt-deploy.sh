@@ -1,17 +1,10 @@
 #!/bin/bash
 set -eu
 
-# VARS DEBUG.
-echo "TAG:: ${TAG}"
-echo "CIRCLE_BUILD_NUM:: $CIRCLE_BUILD_NUM"
+# VARS EVAL.
 TAG_TO_DEPLOY=$(eval echo "$TAG")
-echo "TAG_TO_DEPLOY:: ${TAG_TO_DEPLOY}"
-#echo "${TAG_TO_DEPLOY}"
-#echo "${ACSF_USER}"
-#echo "${ACSF_SITE}"
-#echo "${ACSF_ENV}"
-#echo "${DEPLOY_TYPE}"
 
+# Determine acquia environment, since acsf user/keys are per env.
 get-acquia-key() {
   local -n ACQUIA_KEY="$1"
   if [[ -n ${ACQUIA_KEY_DEV} && -n ${ACQUIA_KEY_TEST} ]]; then
@@ -30,6 +23,9 @@ get-acquia-key() {
     echo "Please set the ACSF User key as an env variable for all your envs. IE: ACQUIA_KEY_DEV and ACQUIA_KEY_TEST".
   fi
 }
+
+# Info
+echo "Tag to deploy to ${ACSF_ENV}: $TAG_TO_DEPLOY"
 
 deploy-tag-acsf() {
   local ACQUIA_ENV_KEY=''
