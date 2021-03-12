@@ -40,5 +40,5 @@ steps:
         ACSF_ENV: << parameters.env >>
         JIRA_URL: << parameters.jira-url >>
         JIRA_TRANS_ID: << parameters.jira-transition-id >>
-        JIRA_AUTH_TOKEN: << parameters.jira-auth >>
+        JIRA_AUTH_TOKEN: "$<< parameters.jira-auth >>"
       command: <<include(scripts/jira-transition.sh)>>
