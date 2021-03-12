@@ -6,6 +6,10 @@ echo "TAG:: ${TAG}"
 echo "CIRCLE_BUILD_NUM:: $CIRCLE_BUILD_NUM"
 TAG_TO_DEPLOY=$(eval echo "$TAG")
 echo "TAG_TO_DEPLOY:: ${TAG_TO_DEPLOY}"
+
+echo "JIRA_AUTH_TOKEN:: $JIRA_AUTH_TOKEN"
+JIRA_TOKEN=$(eval echo "$JIRA_AUTH_TOKEN")
+echo "JIRA_TOKEN EVALUATED:: $JIRA_TOKEN"
 #echo "${ACSF_USER}"
 #echo "${ACSF_SITE}"
 #echo "${ACSF_ENV}"
@@ -65,7 +69,7 @@ transition-issues() {
         ## Transition to "Deployed to ${ACSF_ENV}".
         curl \
           -X POST \
-          -H "Authorization: Basic ${JIRA_AUTH_TOKEN}" \
+          -H "Authorization: Basic ${JIRA_TOKEN}" \
           -H "Content-Type: application/json" \
           --data '{"transition": { "id": "'"${JIRA_TRANS_ID}"'" }}' \
           "${JIRA_URL}"/rest/api/2/issue/"$issue"/transitions
