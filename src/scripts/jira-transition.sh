@@ -1,22 +1,11 @@
 #!/bin/bash
 set -eu
 
-# VARS DEBUG.
-echo "TAG:: ${TAG}"
-echo "CIRCLE_BUILD_NUM:: $CIRCLE_BUILD_NUM"
+# VARS EVAL.
 TAG_TO_DEPLOY=$(eval echo "$TAG")
-echo "TAG_TO_DEPLOY:: ${TAG_TO_DEPLOY}"
-
-echo "JIRA_AUTH_TOKEN:: $JIRA_AUTH_TOKEN"
 JIRA_TOKEN=$(eval echo "$JIRA_AUTH_TOKEN")
-echo "JIRA_TOKEN EVALUATED:: $JIRA_TOKEN"
-#echo "${ACSF_USER}"
-#echo "${ACSF_SITE}"
-#echo "${ACSF_ENV}"
-#echo "${JIRA_URL}"
-#echo "${JIRA_TRANS_ID}"
 
-# Determine acquia environment, set correct key and get current tag.
+# Determine acquia environment, since acsf user/keys are per env.
 get-acquia-key() {
   local ACQUIA_KEY
   if [[ -n ${ACQUIA_KEY_DEV} && -n ${ACQUIA_KEY_TEST} ]]; then
@@ -45,7 +34,7 @@ get-current-tag() {
 
 }
 CURRENT_TAG=$(get-current-tag)
-echo "$CURRENT_TAG"
+echo "Current Tag on ${ACSF_ENV}: $CURRENT_TAG"
 
 # With the the current tag, get a list of issues IDs that were committed between current and latest.
 get-jira-issues() {
