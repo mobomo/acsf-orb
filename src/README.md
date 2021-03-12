@@ -85,3 +85,9 @@ echo -n 'jira_user_email:jira_api_token' | openssl base64
 Copy the base64 encoded string and paste it in the Environment Variable `Value` field:
 
 ![Setting CircleCI Env Vars](/assets/cci_env_vars.png)
+
+### TO-DO
+1. Improve exit codes for commands, specially the ones using API calls.
+2. Implement semantic versioning for tags in a more "flexible" way. Right now we are only incrementing "patch".
+3. Improve Slack notifications messages.
+4. Cleanup for "on hold" workflows? (not really related to this Orb)
