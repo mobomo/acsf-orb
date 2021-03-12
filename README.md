@@ -7,7 +7,7 @@ Since these APIs require an auth method, is a good practice to setup the auth/ke
 of adding that "sensitive" data as plain text in your config file.
 
 So, for the Jira basic auth, we use the `JIRA_AUTH` env var and for the Site Factory we use `ACQUIA_KEY_[ENV]`
-(ie: `ACQUIA_KEY_DEV`, or `ACQUIA_KEY_TEST`). You have to setup these env vars using the circle CI UI, in order to use 
+(ie: `ACQUIA_KEY_DEV`, or `ACQUIA_KEY_TEST`). You have to setup these env vars using the circle CI UI, in order to use
 this Orb.
 
 See an example in the "jira-transition" command below.
