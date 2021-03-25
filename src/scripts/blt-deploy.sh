@@ -47,3 +47,4 @@ deploy-tag-acsf() {
 }
 deploy-tag-acsf
 echo "export ACSF_ENV=$ACSF_ENV" >> "$BASH_ENV"
+echo "export TAG_TO_DEPLOY=$TAG_TO_DEPLOY" >> "$BASH_ENV"
