@@ -40,6 +40,7 @@ echo "Current Tag on ${ACSF_ENV}: $CURRENT_TAG"
 
 # With the the current tag, get a list of issues IDs that were committed between current and latest.
 get-jira-issues() {
+  local JIRA_ISSUES
   if [ -n "${CURRENT_TAG}" ]; then
     JIRA_ISSUES=$(git log "${CURRENT_TAG}".."${TAG_TO_DEPLOY}" | grep -e '[A-Z]\+-[0-9]\+' -o | sort -u | tr '\n' ',' | sed '$s/,$/\n/')
     echo "$JIRA_ISSUES"
@@ -50,11 +51,10 @@ get-jira-issues() {
 
 # Jira API call to transition the issues.
 transition-issues() {
-  get-jira-issues
-  echo "$JIRA_ISSUES"
+  JIRA_ISSUES=$(get-jira-issues)
   if [ -n "${JIRA_ISSUES}" ]; then
     echo "Included tickets between ${CURRENT_TAG} and ${TAG_TO_DEPLOY}: ${JIRA_ISSUES}"
-    for issue in ${JIRA_ISSUES}
+    for issue in ${JIRA_ISSUES//,/ }
       do
         echo "Transitioning $issue..."
         ## Transition to "Deployed to ${ACSF_ENV}".
