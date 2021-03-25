@@ -144,7 +144,7 @@ steps:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Tag*:\\n$CIRCLE_TAG"
+                      "text": "*Tag*:\\n$TAG_TO_DEPLOY"
                     },
                     {
                       "type": "mrkdwn",
