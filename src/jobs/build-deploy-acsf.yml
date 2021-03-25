@@ -132,23 +132,23 @@ steps:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Project:*\n$CIRCLE_PROJECT_REPONAME"
+                      "text": $'*Project:*\n$CIRCLE_PROJECT_REPONAME'
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Environment:*\n$ACSF_ENV"
+                      "text": $'*Environment:*\n$ACSF_ENV'
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*When:*\n$(date +'%m/%d/%Y %T')"
+                      "text": $'*When:*\n$(date +'%m/%d/%Y %T')'
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Tag:*\n$TAG_TO_DEPLOY"
+                      "text": $'*Tag:*\n$TAG_TO_DEPLOY'
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Tickets:*\n$JIRA_ISSUES"
+                      "text": $'*Tickets:*\n$JIRA_ISSUES'
                     }
                   ],
                   "accessory": {
