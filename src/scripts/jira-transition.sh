@@ -70,3 +70,4 @@ transition-issues() {
   fi
 }
 transition-issues
+echo "export JIRA_ISSUES=$(get-jira-issues)" >> "$BASH_ENV"
