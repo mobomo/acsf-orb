@@ -54,7 +54,7 @@ transition-issues() {
   JIRA_ISSUES=$(get-jira-issues)
   if [ -n "${JIRA_ISSUES}" ]; then
     echo "Included tickets between ${CURRENT_TAG} and ${TAG_TO_DEPLOY}: ${JIRA_ISSUES}"
-    for issue in ${JIRA_ISSUES}
+    for issue in ${JIRA_ISSUES//,/ }
       do
         echo "Transitioning $issue..."
         ## Transition to "Deployed to ${ACSF_ENV}".
