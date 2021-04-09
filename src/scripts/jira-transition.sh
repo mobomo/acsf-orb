@@ -54,6 +54,7 @@ transition-issues() {
   JIRA_ISSUES=$(get-jira-issues)
   if [ -n "${JIRA_ISSUES}" ]; then
     echo "Included tickets between ${CURRENT_TAG} and ${TAG_TO_DEPLOY}: ${JIRA_ISSUES}"
+    echo "export JIRA_ISSUES=$(get-jira-issues)" >> "$BASH_ENV"
     for issue in ${JIRA_ISSUES//,/ }
       do
         echo "Transitioning $issue..."
@@ -67,6 +68,7 @@ transition-issues() {
       done
   else
     echo "There are no issues to transition."
+    echo 'export JIRA_ISSUES="No Tickets"' >> "$BASH_ENV"
   fi
 }
 transition-issues

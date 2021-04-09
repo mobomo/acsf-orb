@@ -46,3 +46,6 @@ deploy-tag-acsf() {
   fi
 }
 deploy-tag-acsf
+# Exporting varibles for Slack messages.
+echo "export ACSF_ENV=$ACSF_ENV" >> "$BASH_ENV"
+echo "export TAG_TO_DEPLOY=$TAG_TO_DEPLOY" >> "$BASH_ENV"
