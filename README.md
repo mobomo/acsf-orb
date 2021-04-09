@@ -1,4 +1,4 @@
-# ACSF Orb [![CircleCI Build Status](https://circleci.com/gh/mobomo/acsf-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/mobomo/acsf-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/mobomo/acsf-orb)](https://circleci.com/orbs/registry/orb/mobomo/acsf-orb) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/mobomo/acsf-orb/master/LICENSE)
+# ACSF Orb [![CircleCI Build Status](https://circleci.com/gh/mobomo/acsf-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/mobomo/acsf-orb) [![CircleCI Orb Version](https://circleci.com/gh/mobomo/acsf-orb.svg?style=svg)](https://circleci.com/orbs/registry/orb/mobomo/acsf-orb) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/mobomo/acsf-orb/master/LICENSE)
 Handles builds and deployments to Acquia Site Factory sites. Includes optional Jira integration (to transition tickets, 
 create realeses, etc) and slack notifications.
 
