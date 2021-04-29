@@ -62,6 +62,10 @@ parameters:
     default: ""
     type: string
     description: 'The Jira Cloud URL'
+  cache_version:
+    description: The cache version to use. Increment to build with fresh cache (default "v1").
+    type: string
+    default: "v1"
 environment:
   BASH_ENV: /etc/profile
 steps:
@@ -76,7 +80,7 @@ steps:
         - composer-cache
   - restore_cache:
       keys:
-        - composer-mbn-{{ checksum "composer.lock" }}
+        - <<parameters.cache_version>>-composer-{{ checksum "composer.lock" }}
   - add_ssh_keys:
       fingerprints:
         - << parameters.acsf-fingerprints >>
