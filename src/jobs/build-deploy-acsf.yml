@@ -98,8 +98,6 @@ steps:
       name: SSH Disable Host Key Checking
       command: |
         echo "StrictHostKeyChecking=no">> ~/.ssh/config
-  - blt-build:
-      tag: << parameters.tag >>
   - when:
       condition: <<parameters.with_cache>>
       steps:
@@ -117,6 +115,8 @@ steps:
               - docroot/themes/custom/voa/node_modules
               - docroot/themes/custom/voa_admin/node_modules
               - docroot/themes/custom/voa_amp/node_modules
+  - blt-build:
+      tag: << parameters.tag >>
   - blt-deploy:
       tag: << parameters.tag >>
       env: << parameters.acsf-env >>
