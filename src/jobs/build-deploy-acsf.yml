@@ -62,6 +62,14 @@ parameters:
     default: ""
     type: string
     description: 'The Jira Cloud URL'
+  with_cache:
+    type: boolean
+    default: true
+    description: Whether to save and restore cache or not.
+  cache_version:
+    description: The cache version to use. Increment to build with fresh cache (default "v1").
+    type: string
+    default: "v1"
 environment:
   BASH_ENV: /etc/profile
 steps:
@@ -71,12 +79,18 @@ steps:
         echo "export PATH=`pwd`/vendor/bin:$PATH" >> $BASH_ENV
         source $BASH_ENV
   - checkout
-  - restore_cache:
-      keys:
-        - composer-cache
-  - restore_cache:
-      keys:
-        - composer-mbn-{{ checksum "composer.lock" }}
+  - when:
+      condition: <<parameters.with_cache>>
+      steps:
+        - restore_cache:
+            keys:
+              - <<parameters.cache_version>>-composer-cache
+  - when:
+      condition: <<parameters.with_cache>>
+      steps:
+        - restore_cache:
+            keys:
+              - <<parameters.cache_version>>-composer-{{ checksum "composer.lock" }}
   - add_ssh_keys:
       fingerprints:
         - << parameters.acsf-fingerprints >>
@@ -86,6 +100,23 @@ steps:
         echo "StrictHostKeyChecking=no">> ~/.ssh/config
   - blt-build:
       tag: << parameters.tag >>
+  - when:
+      condition: <<parameters.with_cache>>
+      steps:
+        - save_cache:
+            key: <<parameters.cache_version>>-composer-cache
+            paths:
+              - ~/.composer/cache
+  - when:
+      condition: <<parameters.with_cache>>
+      steps:
+        - save_cache:
+            key: <<parameters.cache_version>>-composer-{{ checksum "composer.lock" }}
+            paths:
+              - vendor
+              - docroot/themes/custom/voa/node_modules
+              - docroot/themes/custom/voa_admin/node_modules
+              - docroot/themes/custom/voa_amp/node_modules
   - blt-deploy:
       tag: << parameters.tag >>
       env: << parameters.acsf-env >>
