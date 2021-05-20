@@ -79,6 +79,11 @@ steps:
         echo "export PATH=`pwd`/vendor/bin:$PATH" >> $BASH_ENV
         source $BASH_ENV
   - checkout
+  - run:
+      name: Get SHA
+      command: |
+        LAST_COMMIT_SHA=$(git log -n1 --format=format:"%H" | awk '{print $1}')
+        echo "LAST_COMMIT_SHA:: $LAST_COMMIT_SHA"
   - add_ssh_keys:
       fingerprints:
         - << parameters.acsf-fingerprints >>
