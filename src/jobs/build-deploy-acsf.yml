@@ -82,7 +82,7 @@ steps:
   - run:
       name: Check if commit points to a tag
       command: |
-        POINTS_TO_TAG=git tag --points-at ${CIRCLE_SHA1}
+        POINTS_TO_TAG=$(git tag --points-at ${CIRCLE_SHA1})
         if [ -n "$POINTS_TO_TAG" ]; then
           circleci-agent step halt
         fi
