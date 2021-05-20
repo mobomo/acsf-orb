@@ -80,10 +80,9 @@ steps:
         source $BASH_ENV
   - checkout
   - run:
-      name: Get SHA
+      name: Check if commit points to a tag
       command: |
-        LAST_COMMIT_SHA=$(git log -n1 --format=format:"%H" | awk '{print $1}')
-        echo "LAST_COMMIT_SHA:: $LAST_COMMIT_SHA"
+        git describe --exact-match ${CIRCLE_SHA1}
   - add_ssh_keys:
       fingerprints:
         - << parameters.acsf-fingerprints >>
