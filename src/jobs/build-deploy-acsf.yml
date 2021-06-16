@@ -79,13 +79,10 @@ steps:
         echo "export PATH=`pwd`/vendor/bin:$PATH" >> $BASH_ENV
         source $BASH_ENV
   - checkout
-  - run:
-      name: Check if commit points to a tag
-      command: |
-        POINTS_TO_TAG=$(git tag --points-at ${CIRCLE_SHA1})
-        if [ -n "$POINTS_TO_TAG" ]; then
-          circleci-agent step halt
-        fi
+  - jira-transition:
+      env: << parameters.acsf-env >>
+      acsf-user: << parameters.acsf-user >>
+      acsf-site: << parameters.acsf-site >>
   - add_ssh_keys:
       fingerprints:
         - << parameters.acsf-fingerprints >>
