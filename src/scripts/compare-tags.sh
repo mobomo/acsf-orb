@@ -1,6 +1,9 @@
 #!/bin/bash
 set -eu
 
+# VARS EVAL.
+TAG_TO_DEPLOY=$(eval echo "$TAG")
+
 # Determine acquia environment, since acsf user/keys are per env.
 get-acquia-key() {
   local ACQUIA_KEY
@@ -33,12 +36,10 @@ get-current-tag() {
 }
 CURRENT_TAG=$(get-current-tag)
 echo "Current Tag on ${ACSF_ENV}: $CURRENT_TAG"
+echo "The tag to deploy is $TAG_TO_DEPLOY"
 
-LAST_TAG=$(git describe --tags --abbrev=0)
-echo "The last tag is $LAST_TAG"
-
-if [ "$LAST_TAG" == "$CURRENT_TAG" ]
+if [ "$TAG_TO_DEPLOY" == "$CURRENT_TAG" ]
 then
-  echo "Stopping deployment."
+  echo "Stopped deployment because the tag to deploy and the one in the destination are the same."
   circleci-agent step halt
 fi

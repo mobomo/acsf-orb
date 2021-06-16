@@ -14,6 +14,11 @@ parameters:
     enum: [ 'dev', 'test', 'prod' ]
     default: 'dev'
     description: 'The environment where to deploy.'
+  tag:
+    type: string
+    default: $CIRCLE_TAG
+    description: 'The tag name to compare.'
+  
 steps:
   - run:
       when: on_success
@@ -22,4 +27,5 @@ steps:
         ACSF_USER: << parameters.acsf-user >>
         ACSF_SITE: << parameters.acsf-site >>
         ACSF_ENV: << parameters.env >>
+        TAG: "<< parameters.tag >>"
       command: <<include(scripts/compare-tags.sh)>>
