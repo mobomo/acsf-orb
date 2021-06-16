@@ -18,7 +18,6 @@ parameters:
     type: string
     default: $CIRCLE_TAG
     description: 'The tag name to compare.'
-  
 steps:
   - run:
       when: on_success
