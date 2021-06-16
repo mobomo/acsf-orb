@@ -21,7 +21,7 @@ parameters:
 steps:
   - run:
       when: on_success
-      name: Transition Jira tickets
+      name: Compare Tags
       environment:
         ACSF_USER: << parameters.acsf-user >>
         ACSF_SITE: << parameters.acsf-site >>
