@@ -48,6 +48,7 @@ steps:
       env: << parameters.acsf-env >>
       acsf-user: << parameters.acsf-user >>
       acsf-site: << parameters.acsf-site >>
+      tag: << parameters.tag >>
   - blt-deploy:
       tag: << parameters.tag >>
       env: << parameters.acsf-env >>
