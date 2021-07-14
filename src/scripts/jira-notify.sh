@@ -1,6 +1,7 @@
 # This script can be removed once https://github.com/CircleCI-Public/jira-connect-orb/pull/61
 # gets merged.
 # : ${CIRCLECI_TOKEN:?"Please provide a CircleCI API token for this orb to work!"} >&2
+CIRCLECI_TOKEN=$(eval echo "$CIRCLECI_TOKEN")
 if echo "$CIRCLE_REPOSITORY_URL" | grep -q 'github.com'
 then
   VCS_TYPE=github
