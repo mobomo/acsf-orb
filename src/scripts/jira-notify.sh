@@ -1,7 +1,7 @@
 # This script can be removed once https://github.com/CircleCI-Public/jira-connect-orb/pull/61
 # gets merged.
-: ${CIRCLECI_TOKEN:?"Please provide a CircleCI API token for this orb to work!"} >&2
-if [[ $(echo $CIRCLE_REPOSITORY_URL | grep github.com) ]]; then
+# : ${CIRCLECI_TOKEN:?"Please provide a CircleCI API token for this orb to work!"} >&2
+if [[ $(echo "$CIRCLE_REPOSITORY_URL" | grep github.com) ]]; then
   VCS_TYPE=github
 else
   VCS_TYPE=bitbucket
@@ -13,7 +13,7 @@ run () {
     # If you have either an issue key or a service ID
   if [[ -n "${ISSUE_KEYS}" || -n "${JIRA_SERVICE_ID}" ]]; then
     check_workflow_status
-    generate_json_payload_$JIRA_JOB_TYPE
+    generate_json_payload_"$JIRA_JOB_TYPE"
     post_to_jira
   else
       # If no service is or issue key is found.
@@ -25,7 +25,7 @@ run () {
 
 verify_api_key () {
   URL="https://circleci.com/api/v2/me?circle-token=${CIRCLECI_TOKEN}"
-  fetch $URL /tmp/me.json
+  fetch "$URL" /tmp/me.json
   jq -e '.login' /tmp/me.json
 }
 
@@ -45,7 +45,7 @@ fetch () {
 
   if [[ "$RESP" != "20"* ]]; then
     echo "Curl failed with code ${RESP}. full response below."
-    cat $OFILE
+    cat "$OFILE"
     exit 1
   fi
 }
@@ -56,10 +56,10 @@ parse_jira_key_array () {
   else
     # must save as ISSUE_KEYS='["CC-4"]'
     fetch "https://circleci.com/api/v2/workflow/${CIRCLE_WORKFLOW_ID}" /tmp/workflow.json
-    PIPELINE_ID=$(cat /tmp/workflow.json | jq -r .pipeline_id)
+    PIPELINE_ID=$(cmd < /tmp/workflow.json | jq -r .pipeline_id)
     fetch "https://circleci.com/api/v2/pipeline/${PIPELINE_ID}" /tmp/pipeline_info.json
     # see https://jqplay.org/s/TNq7c5ctot
-    ISSUE_KEYS=$(cat /tmp/pipeline_info.json | jq -r "[.vcs.commit.subject | scan(\"(${JIRA_ISSUE_REGEX})\") | .[] ] + [.vcs.commit.subject | scan(\"(${JIRA_ISSUE_REGEX})\")   | .[] ] + [if .branch then .vcs.branch else \"\" end | scan(\"(${JIRA_ISSUE_REGEX})\")  | . [] ] + [if ${JIRA_SCAN_BODY} then .vcs.commit.body else \"\" end | scan(\"(${JIRA_ISSUE_REGEX})\") | .[] ]")
+    ISSUE_KEYS=$(cmd < /tmp/pipeline_info.json | jq -r "[.vcs.commit.subject | scan(\"(${JIRA_ISSUE_REGEX})\") | .[] ] + [.vcs.commit.subject | scan(\"(${JIRA_ISSUE_REGEX})\")   | .[] ] + [if .branch then .vcs.branch else \"\" end | scan(\"(${JIRA_ISSUE_REGEX})\")  | . [] ] + [if ${JIRA_SCAN_BODY} then .vcs.commit.body else \"\" end | scan(\"(${JIRA_ISSUE_REGEX})\") | .[] ]")
   fi
 
   if [ -z "$ISSUE_KEYS" ]; then
@@ -71,9 +71,11 @@ parse_jira_key_array () {
 
 check_workflow_status () {
   URL="https://circleci.com/api/v2/workflow/${CIRCLE_WORKFLOW_ID}"
-  fetch $URL /tmp/workflow.json
-  export WORKFLOW_STATUS=$(jq -r '.status' /tmp/workflow.json)
-  export CIRCLE_PIPELINE_NUMBER=$(jq -r '.pipeline_number' /tmp/workflow.json)
+  fetch "$URL" /tmp/workflow.json
+  WORKFLOW_STATUS=$(jq -r '.status' /tmp/workflow.json)
+  export WORKFLOW_STATUS=${WORKFLOW_STATUS}
+  CIRCLE_PIPELINE_NUMBER=$(jq -r '.pipeline_number' /tmp/workflow.json)
+  export CIRCLE_PIPELINE_NUMBER=${CIRCLE_PIPELINE_NUMBER}
   echo "This job is passing, however another job in workflow is ${WORKFLOW_STATUS}"
 
   if [ "$JIRA_JOB_TYPE" != "deployment" ]; then
@@ -240,7 +242,7 @@ post_to_jira () {
 
 # kick off
 if [ "${0#*$ORB_TEST_ENV}" = "$0" ]; then
-  source $JIRA_STATE_PATH
+  source "$JIRA_STATE_PATH"
   run
-  rm -f $JIRA_STATE_PATH
+  rm -f "$JIRA_STATE_PATH"
 fi
