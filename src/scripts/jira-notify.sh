@@ -26,7 +26,7 @@ run () {
 
 verify_api_key () {
   URL="https://circleci.com/api/v2/me?circle-token=${CIRCLECI_TOKEN}"
-  fetch "$URL" /tmp/me.json
+  fetch "${URL}" /tmp/me.json
   jq -e '.login' /tmp/me.json
 }
 
@@ -36,6 +36,7 @@ fetch () {
   fi
 
   URL="$1"
+  echo "$URL"
   OFILE="$2"
 
   if [ -n "$JIRA_TOKEN_NAME" ]; then
