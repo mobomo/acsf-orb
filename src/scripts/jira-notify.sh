@@ -240,3 +240,12 @@ post_to_jira () {
   echo
   echo "Success!"
 }
+
+# kick off
+if [ "${0#*$ORB_TEST_ENV}" = "$0" ]; then
+  # shellcheck disable=SC1091
+  # shellcheck source=/dev/null
+  source "$JIRA_STATE_PATH"
+  run
+  rm -f "$JIRA_STATE_PATH"
+fi
