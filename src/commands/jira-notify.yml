@@ -3,7 +3,7 @@
 parameters:
   token_name:
     description: The name of environment variable containing CircleCI API Token. Required for all projects.
-    default: "CIRCLE_TOKEN"
+    default: $CIRCLE_TOKEN
     type: string
   job_type:
     description: Indicates if job should be treated as build or deployment in Jira dev panel. Note that Deployments require additional details
