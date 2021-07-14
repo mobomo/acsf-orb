@@ -36,7 +36,7 @@ fetch () {
   fi
 
   URL="$1"
-  echo $URL
+  echo "$URL"
   OFILE="$2"
 
   if [ -n "$JIRA_TOKEN_NAME" ]; then
