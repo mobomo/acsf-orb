@@ -243,7 +243,8 @@ post_to_jira () {
 
 # kick off
 if [ "${0#*$ORB_TEST_ENV}" = "$0" ]; then
-  source ./circleci-orb-jira.status
+  # shellcheck source=./circleci-orb-jira.status
+  source $JIRA_STATE_PATH
   run
-  rm -f ./circleci-orb-jira.status
+  rm -f $JIRA_STATE_PATH
 fi
