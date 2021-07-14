@@ -240,3 +240,10 @@ post_to_jira () {
   echo
   echo "Success!"
 }
+
+# kick off
+if [ "${0#*$ORB_TEST_ENV}" = "$0" ]; then
+  source ./circleci-orb-jira.status
+  run
+  rm -f ./circleci-orb-jira.status
+fi
