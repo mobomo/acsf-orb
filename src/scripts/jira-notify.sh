@@ -56,16 +56,8 @@ fetch () {
 }
 
 parse_jira_key_array () {
-  ISSUE_KEYS="\'{["
-  if [ -n "${JIRA_ISSUES}" ]; then
-    for issue in ${JIRA_ISSUES//,/ }
-      do
-        ISSUE_KEYS+=\"$issue","\"
-      done
-    ISSUE_KEYS+="]}\'"
-  fi
-  ISSUE_KEYS=$(printf "$ISSUE_KEYS")
-  echo "Issue keys: $ISSUE_KEYS"
+  ISSUE_KEYS=$(jq -R -s -c 'split("\n")' < "${JIRA_ISSUES}")
+  echo "ISSUE_KEYS: $ISSUE_KEYS"
   if [ -z "$ISSUE_KEYS" ]; then
     # No issue keys found.
     echo "No issue keys found. This build does not contain a match for a Jira Issue. Please add your issue ID to the commit message or within the branch name."
