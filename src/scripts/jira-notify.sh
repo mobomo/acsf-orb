@@ -3,6 +3,7 @@
 # : ${CIRCLECI_TOKEN:?"Please provide a CircleCI API token for this orb to work!"} >&2
 CIRCLECI_TOKEN=$(eval echo "$CIRCLECI_TOKEN")
 JIRA_MANUAL_TAG=$(eval echo "$JIRA_MANUAL_TAG")
+
 echo "Jira Tag: $JIRA_MANUAL_TAG"
 if echo "$CIRCLE_REPOSITORY_URL" | grep -q 'github.com'
 then
@@ -13,9 +14,8 @@ fi
 
 run () {
   verify_api_key
-  parse_jira_key_array
     # If you have either an issue key or a service ID
-  if [[ -n "${ISSUE_KEYS}" || -n "${JIRA_SERVICE_ID}" ]]; then
+  if [[ -n "${JIRA_ISSUES}" || -n "${JIRA_SERVICE_ID}" ]]; then
     check_workflow_status
     generate_json_payload_"$JIRA_JOB_TYPE"
     post_to_jira
@@ -51,17 +51,6 @@ fetch () {
     echo "Curl failed with code ${RESP}. full response below."
     cat "$OFILE"
     exit 1
-  fi
-}
-
-parse_jira_key_array () {
-  ISSUE_KEYS=$JIRA_MANUAL_TAG
-  echo "ISSUE_KEYS: $ISSUE_KEYS"
-
-  if [ -z "$ISSUE_KEYS" ]; then
-    # No issue keys found.
-    echo "No issue keys found. This build does not contain a match for a Jira Issue. Please add your issue ID to the commit message or within the branch name."
-    exit 0
   fi
 }
 
@@ -103,7 +92,7 @@ generate_json_payload_build () {
   --arg repoName "${CIRCLE_PROJECT_REPONAME}" \
   --arg display "${CIRCLE_PROJECT_REPONAME}"  \
   --arg description "${CIRCLE_PROJECT_REPONAME} #${CIRCLE_BUILD_NUM} ${CIRCLE_JOB}" \
-  --argjson issueKeys "${ISSUE_KEYS}" \
+  --argjson issueKeys "[${JIRA_ISSUES}]" \
   '
   ($time_str | tonumber) as $time_num |
   {
