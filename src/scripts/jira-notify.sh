@@ -3,6 +3,7 @@
 # : ${CIRCLECI_TOKEN:?"Please provide a CircleCI API token for this orb to work!"} >&2
 CIRCLECI_TOKEN=$(eval echo "$CIRCLECI_TOKEN")
 JIRA_MANUAL_TAG=$(eval echo "$JIRA_MANUAL_TAG")
+echo "Jira Tag: $JIRA_MANUAL_TAG"
 if echo "$CIRCLE_REPOSITORY_URL" | grep -q 'github.com'
 then
   VCS_TYPE=github
@@ -55,6 +56,7 @@ fetch () {
 }
 
 parse_jira_key_array () {
+  echo "Jira Tag: $JIRA_MANUAL_TAG"
   if [ -n "$JIRA_MANUAL_TAG" ]; then
     ISSUE_KEYS=$JIRA_MANUAL_TAG
   else
