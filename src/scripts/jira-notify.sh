@@ -16,7 +16,7 @@ run () {
   verify_api_key
   parse_jira_key_array
     # If you have either an issue key or a service ID
-  if [[ -n "${JIRA_ISSUES}" || -n "${JIRA_SERVICE_ID}" ]]; then
+  if [[ -n "${ISSUE_KEYS}" || -n "${JIRA_SERVICE_ID}" ]]; then
     check_workflow_status
     generate_json_payload_"$JIRA_JOB_TYPE"
     post_to_jira
@@ -64,7 +64,7 @@ parse_jira_key_array () {
       done
     ISSUE_KEYS+="]}"
   fi
-  
+  echo "Issue keys: $ISSUE_KEYS"
   if [ -z "$ISSUE_KEYS" ]; then
     # No issue keys found.
     echo "No issue keys found. This build does not contain a match for a Jira Issue. Please add your issue ID to the commit message or within the branch name."
@@ -110,7 +110,7 @@ generate_json_payload_build () {
   --arg repoName "${CIRCLE_PROJECT_REPONAME}" \
   --arg display "${CIRCLE_PROJECT_REPONAME}"  \
   --arg description "${CIRCLE_PROJECT_REPONAME} #${CIRCLE_BUILD_NUM} ${CIRCLE_JOB}" \
-  --argjson issueKeys "[${JIRA_ISSUES}]" \
+  --argjson issueKeys "[${ISSUE_KEYS}]" \
   '
   ($time_str | tonumber) as $time_num |
   {
@@ -157,7 +157,7 @@ generate_json_payload_deployment () {
   --arg envName "${JIRA_ENVIRONMENT}" \
   --arg envType "${JIRA_ENVIRONMENT_TYPE}" \
   --arg serviceId "${JIRA_SERVICE_ID}" \
-  --argjson issueKeys "[${JIRA_ISSUES}]" \
+  --argjson issueKeys "[${ISSUE_KEYS}]" \
   '
   ($time_str | tonumber) as $time_num |
   {
