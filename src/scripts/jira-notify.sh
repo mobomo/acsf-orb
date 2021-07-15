@@ -14,6 +14,7 @@ fi
 
 run () {
   verify_api_key
+  parse_jira_key_array
     # If you have either an issue key or a service ID
   if [[ -n "${JIRA_ISSUES}" || -n "${JIRA_SERVICE_ID}" ]]; then
     check_workflow_status
@@ -51,6 +52,22 @@ fetch () {
     echo "Curl failed with code ${RESP}. full response below."
     cat "$OFILE"
     exit 1
+  fi
+}
+
+parse_jira_key_array () {
+  ISSUE_KEYS="["
+  if [ -n "${JIRA_ISSUES}" ]; then
+    for issue in ${JIRA_ISSUES//,/ }
+      do
+        ISSUE_KEYS+=\"$issue","\"
+      done
+    ISSUE_KEYS+="]"
+  fi
+  if [ -z "$ISSUE_KEYS" ]; then
+    # No issue keys found.
+    echo "No issue keys found. This build does not contain a match for a Jira Issue. Please add your issue ID to the commit message or within the branch name."
+    exit 0
   fi
 }
 
