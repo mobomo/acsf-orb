@@ -2,6 +2,7 @@
 # gets merged.
 # : ${CIRCLECI_TOKEN:?"Please provide a CircleCI API token for this orb to work!"} >&2
 CIRCLECI_TOKEN=$(eval echo "$CIRCLECI_TOKEN")
+JIRA_MANUAL_TAG=$(eval echo "$JIRA_MANUAL_TAG")
 if echo "$CIRCLE_REPOSITORY_URL" | grep -q 'github.com'
 then
   VCS_TYPE=github
