@@ -110,7 +110,7 @@ generate_json_payload_build () {
   --arg repoName "${CIRCLE_PROJECT_REPONAME}" \
   --arg display "${CIRCLE_PROJECT_REPONAME}"  \
   --arg description "${CIRCLE_PROJECT_REPONAME} #${CIRCLE_BUILD_NUM} ${CIRCLE_JOB}" \
-  --argjson issueKeys "[${ISSUE_KEYS}]" \
+  --argjson issueKeys "${ISSUE_KEYS}" \
   '
   ($time_str | tonumber) as $time_num |
   {
@@ -157,7 +157,7 @@ generate_json_payload_deployment () {
   --arg envName "${JIRA_ENVIRONMENT}" \
   --arg envType "${JIRA_ENVIRONMENT_TYPE}" \
   --arg serviceId "${JIRA_SERVICE_ID}" \
-  --argjson issueKeys "[${ISSUE_KEYS}]" \
+  --argjson issueKeys "${ISSUE_KEYS}" \
   '
   ($time_str | tonumber) as $time_num |
   {
