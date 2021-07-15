@@ -139,7 +139,7 @@ generate_json_payload_deployment () {
   --arg envName "${JIRA_ENVIRONMENT}" \
   --arg envType "${JIRA_ENVIRONMENT_TYPE}" \
   --arg serviceId "${JIRA_SERVICE_ID}" \
-  --argjson issueKeys "${ISSUE_KEYS}" \
+  --argjson issueKeys "[${JIRA_ISSUES}]" \
   '
   ($time_str | tonumber) as $time_num |
   {
