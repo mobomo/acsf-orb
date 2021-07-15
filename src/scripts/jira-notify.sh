@@ -39,7 +39,6 @@ fetch () {
   fi
 
   URL="$1"
-  echo "$URL"
   OFILE="$2"
 
   if [ -n "$JIRA_TOKEN_NAME" ]; then
@@ -57,7 +56,7 @@ fetch () {
 
 parse_jira_key_array () {
   echo "Jira Tag: $JIRA_MANUAL_TAG"
-  if [ -n "$JIRA_MANUAL_TAG" ]; then
+  if [[ -n ${JIRA_MANUAL_TAG} ]]; then
     ISSUE_KEYS=$JIRA_MANUAL_TAG
   else
     # must save as ISSUE_KEYS='["CC-4"]'
