@@ -41,8 +41,8 @@ fetch () {
   URL="$1"
   OFILE="$2"
 
-  if [ -n "$JIRA_TOKEN_NAME" ]; then
-      set -- "$@" --user "${JIRA_TOKEN_NAME}:"
+  if [ -n "${CIRCLECI_TOKEN}" ]; then
+      set -- "$@" --user "${CIRCLECI_TOKEN}:"
   fi
 
   RESP=$(curl -w "%{http_code}" -s "$@" -o "${OFILE}" "${URL}")
