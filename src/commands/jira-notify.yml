@@ -69,3 +69,4 @@ steps:
         JIRA_ENVIRONMENT: <<parameters.environment>>
         JIRA_ENVIRONMENT_TYPE: <<parameters.environment_type>>
         JIRA_STATE_PATH: <<parameters.state_path>>
+        JIRA_MANUAL_TAG: <<parameters.manual_tag>>
