@@ -56,7 +56,7 @@ fetch () {
 }
 
 parse_jira_key_array () {
-  ISSUE_KEYS=$(echo "${JIRA_ISSUES}" | jq -R -s -c 'split(",")')
+  ISSUE_KEYS=$(echo "${JIRA_ISSUES}" | sed 's/n//' | tr '\n' ',' | jq -R -s -c 'split(",")' | jq 'del(.[] | select(. == ""))')
   echo "ISSUE_KEYS: $ISSUE_KEYS"
   if [ -z "$ISSUE_KEYS" ]; then
     # No issue keys found.
