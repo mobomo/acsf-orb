@@ -2,7 +2,6 @@
 # gets merged.
 CIRCLECI_TOKEN=$(eval echo "$CIRCLECI_TOKEN")
 JIRA_MANUAL_TAG=$(eval echo "$JIRA_MANUAL_TAG")
-CIRCLE_JOB=$(eval echo "$CIRCLE_JOB")
 
 echo "Jira Tag: $JIRA_MANUAL_TAG"
 if echo "$CIRCLE_REPOSITORY_URL" | grep -q 'github.com'
