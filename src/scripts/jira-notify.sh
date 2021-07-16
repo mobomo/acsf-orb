@@ -2,10 +2,7 @@
 # gets merged.
 CIRCLECI_TOKEN=$(eval echo "$CIRCLECI_TOKEN")
 JIRA_MANUAL_TAG=$(eval echo "$JIRA_MANUAL_TAG")
-CIRCLE_JOB=$(eval echo "$CIRCLE_JOB")
 
-echo "CIRCLE_JOB: $CIRCLE_JOB"
-echo "CIRCLE_BRANCH: $CIRCLE_BRANCH"
 echo "Jira Tag: $JIRA_MANUAL_TAG"
 if echo "$CIRCLE_REPOSITORY_URL" | grep -q 'github.com'
 then
@@ -146,8 +143,8 @@ generate_json_payload_deployment () {
   --arg workflowUrl "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}" \
   --arg repoName "${CIRCLE_PROJECT_REPONAME}" \
   --arg pipelineDisplay "#${CIRCLE_PIPELINE_NUMBER} ${CIRCLE_PROJECT_REPONAME}"  \
-  --arg deployDisplay "#${CIRCLE_PIPELINE_NUMBER}  ${CIRCLE_PROJECT_REPONAME} - <<parameters.environment>>"  \
-  --arg description "${CIRCLE_PROJECT_REPONAME} #${CIRCLE_PIPELINE_NUMBER} ${CIRCLE_JOB} <<parameters.environment>>" \
+  --arg deployDisplay "#${CIRCLE_PIPELINE_NUMBER}  ${CIRCLE_PROJECT_REPONAME} - ${CIRCLE_JOB}"  \
+  --arg description "${CIRCLE_PROJECT_REPONAME} #${CIRCLE_PIPELINE_NUMBER} ${CIRCLE_JOB} ${CIRCLE_JOB}" \
   --arg envId "${CIRCLE_WORKFLOW_ID}-${JIRA_ENVIRONMENT}" \
   --arg envName "${JIRA_ENVIRONMENT}" \
   --arg envType "${JIRA_ENVIRONMENT_TYPE}" \
@@ -240,5 +237,9 @@ post_to_jira () {
 
 # kick off
 if [ "${0#*$ORB_TEST_ENV}" = "$0" ]; then
+  # shellcheck disable=SC1091
+  # shellcheck source=/dev/null
+  source "$JIRA_STATE_PATH"
   run
+  rm -f "$JIRA_STATE_PATH"
 fi
