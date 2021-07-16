@@ -2,6 +2,7 @@
 # gets merged.
 CIRCLECI_TOKEN=$(eval echo "$CIRCLECI_TOKEN")
 JIRA_MANUAL_TAG=$(eval echo "$JIRA_MANUAL_TAG")
+JIRA_ENVIRONMENT=$(eval echo "$JIRA_ENVIRONMENT")
 
 echo "Jira Tag: $JIRA_MANUAL_TAG"
 if echo "$CIRCLE_REPOSITORY_URL" | grep -q 'github.com'
@@ -143,8 +144,8 @@ generate_json_payload_deployment () {
   --arg workflowUrl "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}" \
   --arg repoName "${CIRCLE_PROJECT_REPONAME}" \
   --arg pipelineDisplay "#${CIRCLE_PIPELINE_NUMBER} ${CIRCLE_PROJECT_REPONAME}"  \
-  --arg deployDisplay "#${CIRCLE_PIPELINE_NUMBER}  ${CIRCLE_PROJECT_REPONAME} - ${CIRCLE_JOB}"  \
-  --arg description "${CIRCLE_PROJECT_REPONAME} #${CIRCLE_PIPELINE_NUMBER} ${CIRCLE_JOB} ${CIRCLE_JOB}" \
+  --arg deployDisplay "#${CIRCLE_PIPELINE_NUMBER}  ${CIRCLE_PROJECT_REPONAME} - ${JIRA_ENVIRONMENT}"  \
+  --arg description "${CIRCLE_PROJECT_REPONAME} #${CIRCLE_PIPELINE_NUMBER} ${CIRCLE_JOB} ${JIRA_ENVIRONMENT}" \
   --arg envId "${CIRCLE_WORKFLOW_ID}-${JIRA_ENVIRONMENT}" \
   --arg envName "${JIRA_ENVIRONMENT}" \
   --arg envType "${JIRA_ENVIRONMENT_TYPE}" \
