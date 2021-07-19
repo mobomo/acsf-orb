@@ -90,10 +90,3 @@ steps:
               - docroot/themes/custom/voa_amp/node_modules
   - blt-build:
       tag: << parameters.tag >>
-  - when:
-      condition: << parameters.with-jira >>
-      steps:
-        - jira-version:
-            tag: << parameters.tag >>
-            project: << parameters.jira-project >>
-            jira-url: << parameters.jira-url >>
