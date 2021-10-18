@@ -38,10 +38,19 @@ parameters:
     default: ""
     type: string
     description: 'The Jira Cloud URL'
+  tag:
+    default: $CIRCLE_TAG
+    type: string
+    description: 'Tag to be deployed'
 steps:
   - checkout
+  - compare-tags:
+      env: << parameters.acsf-env >>
+      acsf-user: << parameters.acsf-user >>
+      acsf-site: << parameters.acsf-site >>
+      tag: << parameters.tag >>
   - blt-deploy:
-      tag: ${CIRCLE_TAG}
+      tag: << parameters.tag >>
       env: << parameters.acsf-env >>
       deploy-type: << parameters.acsf-deploy-type >>
       acsf-site: << parameters.acsf-site >>
@@ -50,7 +59,7 @@ steps:
       condition: << parameters.with-jira >>
       steps:
         - jira-transition:
-            tag: ${CIRCLE_TAG}
+            tag: << parameters.tag >>
             env: << parameters.acsf-env >>
             acsf-user: << parameters.acsf-user >>
             acsf-site: << parameters.acsf-site >>
@@ -87,7 +96,7 @@ steps:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Tag:*\n$CIRCLE_TAG"
+                      "text": "*Tag:*\n<< parameters.tag >>"
                     },
                     {
                       "type": "mrkdwn",

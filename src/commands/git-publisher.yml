@@ -9,11 +9,18 @@ parameters:
     default: ""
     type: string
     description: 'The automation user email to push the tag.'
+  git-fingerprints:
+    type: string
+    default: ""
+    description: "Git fingerprints for pushing tags"
   tag:
     default: build-v1.0.$CIRCLE_BUILD_NUM
     type: string
     description: 'Tag to be deployed that is created from the BLT build'
 steps:
+  - add_ssh_keys:
+      fingerprints:
+        - << parameters.git-fingerprints >>
   - run:
       name: "Git Publisher"
       command: |
