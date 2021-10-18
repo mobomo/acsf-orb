@@ -10,3 +10,4 @@ display:
 # Used Orbs.
 orbs:
   slack: circleci/slack@4.3.0
+  jq: circleci/jq@2.2
