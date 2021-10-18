@@ -1,0 +1,30 @@
+description: >
+  Compares the last tag with the current on destination env to know if deployment is needed.
+parameters:
+  acsf-user:
+    type: string
+    default: ''
+    description: 'The Acquia Site Factory username.'
+  acsf-site:
+    type: string
+    default: ''
+    description: 'The Acquia Site Factory site.'
+  env:
+    type: enum
+    enum: [ 'dev', 'test', 'prod' ]
+    default: 'dev'
+    description: 'The environment where to deploy.'
+  tag:
+    type: string
+    default: $CIRCLE_TAG
+    description: 'The tag name to compare.'
+steps:
+  - run:
+      when: on_success
+      name: Compare Tags
+      environment:
+        ACSF_USER: << parameters.acsf-user >>
+        ACSF_SITE: << parameters.acsf-site >>
+        ACSF_ENV: << parameters.env >>
+        TAG: "<< parameters.tag >>"
+      command: <<include(scripts/compare-tags.sh)>>

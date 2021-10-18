@@ -1,0 +1,72 @@
+# This command can be removed once https://github.com/CircleCI-Public/jira-connect-orb/pull/61
+# gets merged.
+parameters:
+  token_name:
+    description: The name of environment variable containing CircleCI API Token. Required for all projects.
+    default: $CIRCLE_TOKEN
+    type: string
+  job_type:
+    description: Indicates if job should be treated as build or deployment in Jira dev panel. Note that Deployments require additional details
+    default: "build"
+    type: enum
+    enum: ["build", "deployment"]
+  environment:
+    description: For deployments. Indicates the name of target environment. Default is the CircleCI Job Name.
+    default: "${CIRCLE_JOB}"
+    type: string
+  environment_type:
+    description: Indicates the category of target environment as defined by Atlassian
+    type: enum
+    enum: ["production", "staging", "testing", "development", "unmapped"]
+    default: "development"
+  state_path:
+    description: Relative or absolute path to a store build state for orb.
+    default: "./circleci-orb-jira.status"
+    type: string
+  service_id:
+    description: Specify the JSD service ID for the project this notification targets.
+    type: string
+    default: ''
+  issue_regexp:
+    description: Override the default project key regexp if your project keys follow a different format.
+    default: "[A-Z]{2,30}-[0-9]+"
+    type: string
+  scan_commit_body:
+    description: Whether or not to scan the Commit Body for the JIRA Issue Tag. Default is false.
+    default: false
+    type: boolean
+  manual_tag:
+    description: Manually set tag for the Jira issue, rather than scanning commit message. Useful when triggering this command via the API.
+    default: ""
+    type: string
+
+steps:
+  - jq/install:
+      when: always
+
+  - run:
+      name: JIRA - Setting Failure Condition
+      command: |
+        echo 'JIRA_BUILD_STATUS="failed"' > <<parameters.state_path>>
+      when: on_fail
+
+  - run:
+      name: JIRA - Setting Success Condition
+      command: |
+        echo 'JIRA_BUILD_STATUS="successful"' > <<parameters.state_path>>
+      when: on_success
+
+  - run:
+      when: always
+      name: Update status in Atlassian Jira
+      command: <<include(scripts/jira-notify.sh)>>
+      environment:
+        CIRCLECI_TOKEN: <<parameters.token_name>>
+        JIRA_SERVICE_ID: <<parameters.service_id>>
+        JIRA_JOB_TYPE: <<parameters.job_type>>
+        JIRA_ISSUE_REGEX: <<parameters.issue_regexp>>
+        JIRA_SCAN_BODY: <<parameters.scan_commit_body>>
+        JIRA_ENVIRONMENT: <<parameters.environment>>
+        JIRA_ENVIRONMENT_TYPE: <<parameters.environment_type>>
+        JIRA_STATE_PATH: <<parameters.state_path>>
+        JIRA_MANUAL_TAG: <<parameters.manual_tag>>
