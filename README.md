@@ -95,6 +95,7 @@ Copy the base64 encoded string and paste it in the Environment Variable `Value` 
 
 ### TO-DO
 1. Improve exit codes for commands, specially the ones using API calls.
-2. Implement semantic versioning for tags in a more "flexible" way. Right now we are only incrementing "patch".
+2. ~~Implement semantic versioning for tags in a more "flexible" way. Right now we are only incrementing "patch".~~
 3. Improve Slack notifications messages.
-4. Cleanup for "on hold" workflows? (not really related to this Orb)
+4. When/If https://ideas.circleci.com/orbs/p/allow-list-type-parameters-in-orbs get's in. 
+Improve how we build the cache paths parameters in the build-release-tag Job. 
