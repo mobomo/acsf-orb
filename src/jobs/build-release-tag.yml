@@ -32,6 +32,26 @@ parameters:
     description: The cache version to use. Increment to build with fresh cache (default "v1").
     type: string
     default: "v1"
+  cache_path_1:
+    description: A path to save/restore in cache # Improve when https://discuss.circleci.com/t/list-parameter-type/26705/6 gets in.
+    type: string
+    default: "vendor"
+  cache_path_2:
+    description: A path to save/restore in cache
+    type: string
+    default: ""
+  cache_path_3:
+    description: A path to save/restore in cache
+    type: string
+    default: ""
+  cache_path_4:
+    description: A path to save/restore in cache
+    type: string
+    default: ""
+  cache_path_5:
+    description: A path to save/restore in cache
+    type: string
+    default: ""
 environment:
   BASH_ENV: /etc/profile
 steps:
@@ -84,9 +104,10 @@ steps:
         - save_cache:
             key: <<parameters.cache_version>>-composer-{{ checksum "composer.lock" }}
             paths:
-              - vendor
-              - docroot/themes/custom/voa/node_modules
-              - docroot/themes/custom/voa_admin/node_modules
-              - docroot/themes/custom/voa_amp/node_modules
+              - <<parameters.cache_path_1>>
+              - <<parameters.cache_path_2>>
+              - <<parameters.cache_path_3>>
+              - <<parameters.cache_path_4>>
+              - <<parameters.cache_path_5>>
   - blt-build:
       tag: << parameters.tag >>
