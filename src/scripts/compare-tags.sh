@@ -35,7 +35,7 @@ get-current-tag() {
 
 }
 
-# Compare the commit SHA the tags points to, to make sure they are different.
+# Compare the commit SHA the tags points to, to make sure they are truly different.
 compare-tag-commits() {
   CURRENT_TAG=$(get-current-tag)
   echo "Current Tag on ${ACSF_ENV}: $CURRENT_TAG"
