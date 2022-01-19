@@ -34,24 +34,12 @@ get-current-tag() {
     -u "${ACSF_USER}":"${ACQUIA_KEY}" | jq -r '.current' | sed 's/tags\///'
 
 }
+CURRENT_TAG=$(get-current-tag)
+echo "Current Tag on ${ACSF_ENV}: $CURRENT_TAG"
+echo "The tag to deploy is $TAG_TO_DEPLOY"
 
-# Compare the commit SHA the tags points to, to make sure they are different.
-compare-tag-commits() {
-  CURRENT_TAG=$(get-current-tag)
-  echo "Current Tag on ${ACSF_ENV}: $CURRENT_TAG"
-  echo "The tag to deploy is $TAG_TO_DEPLOY"
-
-  # Get commits.
-  COMMIT_SHA_CURRENT=$(git rev-list -n 1 "$CURRENT_TAG")
-  COMMIT_SHA_DEPLOY=$(git rev-list -n 1 "$TAG_TO_DEPLOY")
-
-  echo "$CURRENT_TAG points to commit SHA: $COMMIT_SHA_CURRENT"
-  echo "$TAG_TO_DEPLOY points to commit SHA: $COMMIT_SHA_DEPLOY"
-
-  if [ "$COMMIT_SHA_CURRENT" == "$COMMIT_SHA_DEPLOY" ]
-  then
-    echo "Stopped deployment because the tag to deploy and the one in the destination are the same."
-    circleci-agent step halt
-  fi
-}
-compare-tag-commits
+if [ "$TAG_TO_DEPLOY" == "$CURRENT_TAG" ]
+then
+  echo "Stopped deployment because the tag to deploy and the one in the destination are the same."
+  circleci-agent step halt
+fi
