@@ -1,5 +1,5 @@
 description: >
-  Deploy a pushed tag to the specified environment.
+  Deploys a pushed tag to the specified environment.
 
 executor: default
 
