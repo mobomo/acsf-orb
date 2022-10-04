@@ -58,7 +58,7 @@ parameters:
     default: latest
     description: >
       Pick a specific mobomo/drupalstand-ci image variant:
-      https://hub.docker.com/r/mobomo/drupalstand-ci/tags
+      https://hub.docker.com/r/mobomo/drupalstand-ci/tags.
     type: string
 environment:
   BASH_ENV: /etc/profile
