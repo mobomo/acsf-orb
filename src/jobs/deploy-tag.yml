@@ -1,7 +1,9 @@
 description: >
   Deploys a pushed tag to the specified environment.
 
-executor: default
+executor:
+  name: default
+  tag: << parameters.img-version >>
 
 parameters:
   acsf-user:
@@ -42,6 +44,12 @@ parameters:
     default: $CIRCLE_TAG
     type: string
     description: 'Tag to be deployed'
+  img-version:
+    default: latest
+    description: >
+      Pick a specific mobomo/drupalstand-ci image variant:
+      https://hub.docker.com/r/mobomo/drupalstand-ci/tags
+    type: string
 steps:
   - checkout
   - compare-tags:

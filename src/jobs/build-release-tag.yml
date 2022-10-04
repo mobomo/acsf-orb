@@ -1,7 +1,9 @@
 description: >
   Builds a release tag using BLT commands
 
-executor: default
+executor:
+  name: default
+  tag: << parameters.img-version >>
 
 parameters:
   acsf-fingerprints:
@@ -52,6 +54,12 @@ parameters:
     description: A path to save/restore in cache
     type: string
     default: ""
+  img-version:
+    default: latest
+    description: >
+      Pick a specific mobomo/drupalstand-ci image variant:
+      https://hub.docker.com/r/mobomo/drupalstand-ci/tags
+    type: string
 environment:
   BASH_ENV: /etc/profile
 steps:

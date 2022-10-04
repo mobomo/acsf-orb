@@ -20,5 +20,6 @@ usage:
             acsf-env: "test"
             acsf-deploy-type: "code, db"
             slack-channel: "@your_channel"
+            img-version: "latest"
             requires:
               - approve-deployment
