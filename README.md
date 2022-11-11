@@ -55,6 +55,11 @@ This command receives the following parameters to performs the API calls:
   deployments.
 - `acsf-user`: Sets the acsf user account.
 - `acsf-site`: Sets the project site. You can get this value looking at your acsf url: `https://www.[env]-[site].acsitefactory.com`
+- `slack-channel`: The Slack Channel to send notifications.
+- `with-jira`: Boolean. If set to "true" it will transition tickets on the Jira project.
+- `jira-transition-id`: The Jira transition ID.
+- `jira-url`: The Jira Cloud URL
+- `jira-project`: The Jira Project key for which we should transition tickets.
 
 **NOTE**: To perform API calls to the site factory is recommended to create a "machine" user in the site factory
 (in each environment!). This user should have the role "release engineer" to have the correct permissions to use the
@@ -78,6 +83,7 @@ This command receives the following parameters:
 - `env`: The environment where to deploy. It's default value is "test"
 - `jira-url`: The Jira Cloud URL
 - `jira-transition-id`: The Jira transition ID
+- `jira-project`: The Jira project key, to transition only tickets in the specified project.
 
 **NOTE:** To avoid setting the auth token in your config files, you must define it as an CircleCI Environment Variable.
 

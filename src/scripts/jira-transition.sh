@@ -4,6 +4,7 @@ set -eu
 # VARS EVAL.
 TAG_TO_DEPLOY=$(eval echo "$TAG")
 JIRA_TOKEN=$(eval echo "$JIRA_AUTH_TOKEN")
+#JIRA_PROJECT=$(eval echo "$JIRA_PROJECT")
 
 # Determine acquia environment, since acsf user/keys are per env.
 get-acquia-key() {
@@ -38,11 +39,11 @@ get-current-tag() {
 CURRENT_TAG=$(get-current-tag)
 echo "Current Tag on ${ACSF_ENV}: $CURRENT_TAG"
 
-# With the the current tag, get a list of issues IDs that were committed between current and latest.
+# With the the current tag, get a list of issues IDs that were committed between current and latest. Filtering by Jira Project Key.
 get-jira-issues() {
   local JIRA_ISSUES
   if [ -n "${CURRENT_TAG}" ]; then
-    JIRA_ISSUES=$(git log "${CURRENT_TAG}".."${TAG_TO_DEPLOY}" | grep -e '[A-Z]\+-[0-9]\+' -o | sort -u | tr '\n' ',' | sed '$s/,$/\n/')
+    JIRA_ISSUES=$(git log "${CURRENT_TAG}".."${TAG_TO_DEPLOY}" | grep -e "${JIRA_PROJECT}-[0-9]\+" -o | sort -u | tr '\n' ',' | sed '$s/,$/\n/')
     echo "$JIRA_ISSUES"
   else
     echo "We were not able to get current tag deployed to ACSF Env. Please check the 'acsf-' parameters are correctly set."
@@ -55,6 +56,7 @@ transition-issues() {
   if [ -n "${JIRA_ISSUES}" ]; then
     echo "Included tickets between ${CURRENT_TAG} and ${TAG_TO_DEPLOY}: ${JIRA_ISSUES}"
     echo "export JIRA_ISSUES=$(get-jira-issues)" >> "$BASH_ENV"
+    echo "export JIRA_PROJECT=${JIRA_PROJECT}" >> "$BASH_ENV"
     for issue in ${JIRA_ISSUES//,/ }
       do
         echo "Transitioning $issue..."
