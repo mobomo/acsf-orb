@@ -40,6 +40,10 @@ parameters:
     default: ""
     type: string
     description: 'The Jira Cloud URL'
+  jira-project:
+    default: ""
+    type: string
+    description: 'The Jira Project key for which we should transition tickets.'
   tag:
     default: $CIRCLE_TAG
     type: string
@@ -73,6 +77,7 @@ steps:
             acsf-site: << parameters.acsf-site >>
             jira-transition-id: << parameters.jira-transition-id >>
             jira-url: << parameters.jira-url >>
+            jira-project: << parameters.jira-project >>
   - slack/notify:
       event: pass
       channel: << parameters.slack-channel >>
@@ -112,6 +117,10 @@ steps:
                             {
                                 "type": "mrkdwn",
                                 "text": "*Tag:*\n<< parameters.tag >>"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Jira Project:*\n$JIRA_PROJECT"
                             },
                             {
                                 "type": "mrkdwn",

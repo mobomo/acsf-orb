@@ -20,6 +20,9 @@ usage:
             acsf-env: "test"
             acsf-deploy-type: "code, db"
             slack-channel: "@your_channel"
+            jira-transition-id: "3"
+            jira-url: "https://your.jira.url"
+            jira-project: "ABC"
             img-version: "latest"
             requires:
               - approve-deployment
