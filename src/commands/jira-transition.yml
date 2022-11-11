@@ -25,10 +25,14 @@ parameters:
   jira-transition-id:
     type: string
     default: ""
-    description: "The Jira transition ID"
+    description: 'The Jira transition ID'
   jira-auth:
     type: env_var_name
     default: JIRA_AUTH
+  jira-project:
+    type: string
+    default: ""
+    description: 'The Jira Project key for which we should transition tickets.'
 steps:
   - run:
       when: on_success
@@ -41,4 +45,5 @@ steps:
         JIRA_URL: << parameters.jira-url >>
         JIRA_TRANS_ID: << parameters.jira-transition-id >>
         JIRA_AUTH_TOKEN: "$<< parameters.jira-auth >>"
+        JIRA_PROJECT: <<  parameters.jira-project >>
       command: <<include(scripts/jira-transition.sh)>>
