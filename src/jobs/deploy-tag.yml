@@ -95,7 +95,7 @@ steps:
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": "Deployment Successful! :tada:",
+                            "text": "Deployment Started! :tada:",
                             "emoji": true
                         }
                     },
