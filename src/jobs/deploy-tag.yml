@@ -54,6 +54,13 @@ parameters:
       Pick a specific mobomo/drupalstand-ci image variant:
       https://hub.docker.com/r/mobomo/drupalstand-ci/tags
     type: string
+  mk_message:
+    default: "## Deployment started ✨"
+    type: string
+    description: >
+      The message to display on Slack channel when the
+      deployment starts. It must be a string and supports Markdown.
+      Do not include the "```" quotes.
 steps:
   - checkout
   - compare-tags:
@@ -96,7 +103,7 @@ steps:
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "``` _______________________\n/ Deployment  completed \\\n\\ Find info  below  me  /\n -----------------------\n       \\   ^__^\n        \\  (oo)\\_______\n           (__)\\       )\\/\\\n               ||----w |\n               ||     ||```"
+                            "text": "```<< parameters.mk_message >>```"
                         }
                     },
                     {
@@ -143,20 +150,6 @@ steps:
                                     "text": "View Job"
                                 },
                                 "url": "${CIRCLE_BUILD_URL}"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "context",
-                        "elements": [
-                            {
-                                "type": "image",
-                                "image_url": "https://pbs.twimg.com/profile_images/625633822235693056/lNGUneLX_400x400.jpg",
-                                "alt_text": "cute cat"
-                            },
-                            {
-                                "type": "mrkdwn",
-                                "text": "*cat* approved this message :heavy_check_mark:"
                             }
                         ]
                     },

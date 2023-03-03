@@ -24,5 +24,6 @@ usage:
             jira-url: "https://your.jira.url"
             jira-project: "ABC"
             img-version: "latest"
+            mk_message: "## Deployment started ✨"
             requires:
               - approve-deployment
