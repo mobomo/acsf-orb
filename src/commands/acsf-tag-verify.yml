@@ -1,0 +1,9 @@
+description: >
+  Verifies that the current version is ACSF valid, using acsf-init-verify command.
+
+steps:
+  - run:
+      name: ACSF Verify Tag
+      command: |
+        vendor/bin/drush --include="./docroot/modules/contrib/acsf/acsf_init" acsf-init-verify
+        echo "$?"
