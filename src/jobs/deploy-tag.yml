@@ -55,12 +55,11 @@ parameters:
       https://hub.docker.com/r/mobomo/drupalstand-ci/tags
     type: string
   mk_message:
-    default: "## Deployment started ✨"
+    default: "Be patient, it might take a couple of minutes to be completed :tea:"
     type: string
     description: >
       The message to display on Slack channel when the
       deployment starts. It must be a string and supports Markdown.
-      Do not include the "```" quotes.
 steps:
   - checkout
   - compare-tags:
@@ -103,7 +102,7 @@ steps:
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "```<< parameters.mk_message >>```"
+                            "text": "<< parameters.mk_message >>"
                         }
                     },
                     {
