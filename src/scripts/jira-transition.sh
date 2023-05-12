@@ -43,10 +43,10 @@ echo "Current Tag on ${ACSF_ENV}: $CURRENT_TAG"
 # With the current tag, get a list of issues IDs that were committed between current and latest.
 # Filtering by Jira Project Key.
 get-jira-issues() {
-  local jira_project=$1
+  local jira_project_id=$1
   local JIRA_ISSUES
   if [ -n "${CURRENT_TAG}" ]; then
-    JIRA_ISSUES=$(git log "${CURRENT_TAG}".."${TAG_TO_DEPLOY}" | grep -e "${jira_project}-[0-9]\+" -o | sort -u | tr '\n' ',' | sed '$s/,$/\n/')
+    JIRA_ISSUES=$(git log "${CURRENT_TAG}".."${TAG_TO_DEPLOY}" | grep -e "${jira_project_id}-[0-9]\+" -o | sort -u | tr '\n' ',' | sed '$s/,$/\n/')
     echo "$JIRA_ISSUES"
   else
     echo "We were not able to get current tag deployed to ACSF Env. Please check the 'acsf-' parameters are correctly set."
@@ -63,17 +63,17 @@ transition-project-issues() {
   echo "The Transition IDs: " "${jira_transitions[@]}"
   # We assume here the project and transition ids will be set in the same order, so we use the keys for each array.
   for key in "${!jira_projects[@]}"; do
-    local jira_project=${jira_projects[$key]}
+    local jira_project_id=${jira_projects[$key]}
     local jira_trans=${jira_transitions[$key]}
 
-    JIRA_ISSUES=$(get-jira-issues jira_project)
+    JIRA_ISSUES=$(get-jira-issues jira_project_id)
     echo "The Jira Issues ids in JIRA_ISSUES: $JIRA_ISSUES"
-    echo "The Jira Project ID in jira_project: $jira_project"
+    echo "The Jira Project ID in jira_project_id: $jira_project_id"
     if [ -n "${JIRA_ISSUES}" ]; then
-      echo "Included tickets between ${CURRENT_TAG} and ${TAG_TO_DEPLOY} for Project $jira_project: ${JIRA_ISSUES}"
+      echo "Included tickets between ${CURRENT_TAG} and ${TAG_TO_DEPLOY} for Project $jira_project_id: ${JIRA_ISSUES}"
       # @todo: We might need to append here so we don't get the last project overriding these vars.
-      echo "export JIRA_ISSUES=$(get-jira-issues jira_project)" >> "$BASH_ENV"
-      echo "export JIRA_PROJECT=${jira_project}" >> "$BASH_ENV"
+      echo "export JIRA_ISSUES=$(get-jira-issues jira_project_id)" >> "$BASH_ENV"
+      echo "export JIRA_PROJECT=${jira_project_id}" >> "$BASH_ENV"
       for issue in ${JIRA_ISSUES//,/ }
         do
           echo "Transitioning to $jira_trans the issue $issue..."
