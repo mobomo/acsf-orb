@@ -67,8 +67,11 @@ transition-project-issues() {
     local jira_trans=${jira_transitions[$key]}
 
     JIRA_ISSUES=$(get-jira-issues jira_project)
+    echo "The Jira Issues ids in JIRA_ISSUES: $JIRA_ISSUES"
+    echo "The Jira Project ID in jira_project: $jira_project"
     if [ -n "${JIRA_ISSUES}" ]; then
       echo "Included tickets between ${CURRENT_TAG} and ${TAG_TO_DEPLOY} for Project $jira_project: ${JIRA_ISSUES}"
+      # @todo: We might need to append here so we don't get the last project overriding these vars.
       echo "export JIRA_ISSUES=$(get-jira-issues jira_project)" >> "$BASH_ENV"
       echo "export JIRA_PROJECT=${jira_project}" >> "$BASH_ENV"
       for issue in ${JIRA_ISSUES//,/ }
@@ -87,6 +90,9 @@ transition-project-issues() {
       echo 'export JIRA_ISSUES="No Tickets"' >> "$BASH_ENV"
     fi
   done
+  echo "-- After transitioning issues and exporting BASH_ENV --"
+  echo "The Jira Issues ids in JIRA_ISSUES: $JIRA_ISSUES"
+  echo "The Jira Project ID in JIRA_PROJECT: $JIRA_PROJECT"
 }
 transition-project-issues
 
