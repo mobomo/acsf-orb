@@ -39,7 +39,7 @@ get-current-tag() {
 CURRENT_TAG=$(get-current-tag)
 echo "Current Tag on ${ACSF_ENV}: $CURRENT_TAG"
 
-# Receives jira_project as argument.
+# Receives jira_project_id as argument.
 # With the current tag, get a list of issues IDs that were committed between current and latest.
 # Filtering by Jira Project Key.
 get-jira-issues() {
@@ -66,13 +66,13 @@ transition-project-issues() {
     local jira_project_id=${jira_projects[$key]}
     local jira_trans=${jira_transitions[$key]}
 
-    JIRA_ISSUES=$(get-jira-issues jira_project_id)
+    JIRA_ISSUES=$(get-jira-issues "${jira_project_id}")
     echo "The Jira Issues ids in JIRA_ISSUES: $JIRA_ISSUES"
     echo "The Jira Project ID in jira_project_id: $jira_project_id"
     if [ -n "${JIRA_ISSUES}" ]; then
       echo "Included tickets between ${CURRENT_TAG} and ${TAG_TO_DEPLOY} for Project $jira_project_id: ${JIRA_ISSUES}"
       # @todo: We might need to append here so we don't get the last project overriding these vars.
-      echo "export JIRA_ISSUES=$(get-jira-issues jira_project_id)" >> "$BASH_ENV"
+      echo "export JIRA_ISSUES=$(get-jira-issues "${jira_project_id}")" >> "$BASH_ENV"
       echo "export JIRA_PROJECT=${jira_project_id}" >> "$BASH_ENV"
       for issue in ${JIRA_ISSUES//,/ }
         do
@@ -86,8 +86,8 @@ transition-project-issues() {
             "${JIRA_URL}"/rest/api/2/issue/"$issue"/transitions
         done
     else
-      echo "There are no issues to transition."
-      echo 'export JIRA_ISSUES="No Tickets"' >> "$BASH_ENV"
+      echo "There are no issues to transition for ${jira_project_id}."
+#      echo 'export JIRA_ISSUES="No Tickets"' >> "$BASH_ENV"
     fi
   done
   echo "-- After transitioning issues and exporting BASH_ENV --"
