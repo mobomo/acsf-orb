@@ -58,6 +58,10 @@ parameters:
     description: A path to save/restore in cache
     type: string
     default: ""
+  cache_path_7:
+    description: A path to save/restore in cache
+    type: string
+    default: ""
   img-version:
     default: latest
     description: >
@@ -122,5 +126,6 @@ steps:
               - <<parameters.cache_path_4>>
               - <<parameters.cache_path_5>>
               - <<parameters.cache_path_6>>
+              - <<parameters.cache_path_7>>
   - blt-build:
       tag: << parameters.tag >>
