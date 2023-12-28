@@ -36,6 +36,7 @@ parameters:
 steps:
   - checkout
   - blt-deployed-notify:
+      tag: << parameters.tag >>
       env: << parameters.acsf-env >>
       acsf-site: << parameters.acsf-site >>
       acsf-user: << parameters.acsf-user >>

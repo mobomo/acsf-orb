@@ -2,7 +2,7 @@
 set -eu
 
 # VARS EVAL.
-# DEPLOYED_TAG=$(eval echo "$TAG")
+DEPLOYED_TAG=$(eval echo "$TAG")
 
 # Determine acquia environment, since acsf user/keys are per env.
 get-acquia-key() {
@@ -51,6 +51,7 @@ get-update-status() {
   # Exporting varibles for Slack messages.
   {
     echo "export ACSF_ENV=$ACSF_ENV"
+    echo "export DEPLOYED_TAG=$DEPLOYED_TAG"
     echo "export ACSF_DEPLOYMENT_PROGRESS=$deployment_progress"
     echo "export DEPLOYMENT_COMPLETED=$deployment_completed"
   } >> "$BASH_ENV"
