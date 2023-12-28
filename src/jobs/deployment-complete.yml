@@ -1,0 +1,110 @@
+description: >
+  Notifies the completed deployment.
+
+executor:
+  name: default
+  tag: << parameters.img-version >>
+
+parameters:
+  acsf-user:
+    type: string
+    default: ""
+    description: "Acquia Environment User"
+  acsf-site:
+    type: string
+    default: ""
+    description: "Acquia Environment Site"
+  acsf-env:
+    type: enum
+    enum: [ 'dev', 'test', 'prod' ]
+    default: 'dev'
+    description: "Acquia Site Factory environment name"
+  slack-channel:
+    type: string
+    default: ""
+    description: "Slack Channel"
+  tag:
+    default: $CIRCLE_TAG
+    type: string
+    description: 'Deployed Tag'
+  img-version:
+    default: latest
+    description: >
+      Pick a specific mobomo/drupalstand-ci image variant:
+      https://hub.docker.com/r/mobomo/drupalstand-ci/tags
+    type: string
+steps:
+  - checkout
+  - blt-deployed-notify:
+      env: << parameters.acsf-env >>
+      acsf-site: << parameters.acsf-site >>
+      acsf-user: << parameters.acsf-user >>
+  - slack/notify:
+      event: pass
+      channel:
+      custom:  |
+        {
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "Deployment Completed! :tada:",
+                "emoji": true
+              }
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "Site update completed successfully."
+              }
+            },
+            {
+              "type": "section",
+              "fields": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*Project:*\n$CIRCLE_PROJECT_REPONAME"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Environment:*\n$ACSF_ENV"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*When:*\n$(date +'%m/%d/%Y %T')"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Tag:*\n$<< parameters.tag >>"
+                }
+              ],
+              "accessory": {
+                "type": "image",
+                "image_url": "https://assets.brandfolder.com/otz5mn-bw4j2w-6jzqo8/original/circle-logo-badge-black.png",
+                "alt_text": "CircleCI logo"
+              }
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "View Job"
+                  },
+                  "url": "${CIRCLE_BUILD_URL}"
+                }
+              ]
+            },
+            {
+              "type": "divider"
+            }
+          ]
+        }
+  - slack/notify:
+      event: fail
+      channel: << parameters.slack-channel >>
+      template: basic_fail_1

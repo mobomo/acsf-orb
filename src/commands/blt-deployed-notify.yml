@@ -1,0 +1,24 @@
+description: >
+  Sends Slack notification when Acquia Site Factory Deployment is completed.
+parameters:
+  env:
+    type: enum
+    enum: [ 'dev', 'test', 'prod' ]
+    default: 'dev'
+    description: 'The environment where to deploy.'
+  acsf-site:
+    type: string
+    default: ''
+    description: 'The Acquia Site Factory project site name.'
+  acsf-user:
+    type: string
+    default: ''
+    description: 'The Acquia Site Factory username.'
+steps:
+  - run:
+      name: Deployment to ACSF
+      environment:
+        ACSF_ENV: << parameters.env >>
+        ACSF_SITE: << parameters.acsf-site >>
+        ACSF_USER: << parameters.acsf-user >>
+      command: <<include(scripts/blt-deployed-notify.sh)>>

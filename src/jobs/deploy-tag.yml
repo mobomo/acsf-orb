@@ -94,7 +94,7 @@ steps:
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": "Deployment Started! :tada:",
+                            "text": "Deployment Started! :hourglass_flowing_sand:",
                             "emoji": true
                         }
                     },
