@@ -42,7 +42,7 @@ get-update-status() {
       if [[ "$deployment_progress" -lt 100 ]]; then
         echo "Waiting for deployment to finish."
         echo -e "Current percentage progress: ${deployment_progress}% \nTrying again in 10 minutes..."
-        sleep 6000
+        sleep 600
       fi
   done
   echo "Deployment progress: ${deployment_progress}% Deployment completed!"
