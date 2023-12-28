@@ -49,8 +49,10 @@ get-update-status() {
   deployment_completed=1
 
   # Exporting varibles for Slack messages.
-  echo "export ACSF_ENV=$ACSF_ENV" >> "$BASH_ENV"
-  echo "export ACSF_DEPLOYMENT_PROGRESS=$deployment_progress" >> "$BASH_ENV"
-  echo "export DEPLOYMENT_COMPLETED=$deployment_completed" >> "$BASH_ENV"
+  {
+    echo "export ACSF_ENV=$ACSF_ENV"
+    echo "export ACSF_DEPLOYMENT_PROGRESS=$deployment_progress"
+    echo "export DEPLOYMENT_COMPLETED=$deployment_completed"
+  } >> "$BASH_ENV"
 }
 get-update-status
