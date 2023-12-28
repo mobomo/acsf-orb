@@ -41,8 +41,8 @@ get-update-status() {
                    https://www."${ACSF_ENV}"-"${ACSF_SITE}".acsitefactory.com/api/v1/update/"${TASK_ID}"/status | jq -c '.percentage')
       if [[ "$deployment_progress" -lt 100 ]]; then
         echo "Waiting for deployment to finish."
-        echo -e "Current percentage progress: ${deployment_progress}% \nTrying again in 10 minutes..."
-        sleep 600
+        echo -e "Current percentage progress: ${deployment_progress}% \nTrying again in 5 minutes..."
+        sleep 300
       fi
   done
   echo "Deployment progress: ${deployment_progress}% Deployment completed!"
