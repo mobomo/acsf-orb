@@ -20,7 +20,7 @@ parameters:
     description: 'The Acquia Site Factory username.'
 steps:
   - run:
-      name: Deployment to ACSF
+      name: Deployment to ACSF Progress
       environment:
         TAG: "<< parameters.tag >>"
         ACSF_ENV: << parameters.env >>
