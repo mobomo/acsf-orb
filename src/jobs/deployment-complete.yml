@@ -78,7 +78,7 @@ steps:
                 },
                 {
                   "type": "mrkdwn",
-                  "text": "*Tag:*\n$<< parameters.tag >>"
+                  "text": "*Tag:*\n<< parameters.tag >>"
                 }
               ],
               "accessory": {
