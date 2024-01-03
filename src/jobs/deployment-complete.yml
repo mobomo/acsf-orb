@@ -74,7 +74,7 @@ steps:
                 },
                 {
                   "type": "mrkdwn",
-                  "text": "*When:*\n$(TZ=":US/Eastern" date +'%m/%d/%Y %T %Z')"
+                  "text": "*When:*\n$(TZ=':US/Eastern' date +'%m/%d/%Y %T %Z')"
                 },
                 {
                   "type": "mrkdwn",
